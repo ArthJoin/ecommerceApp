@@ -15,7 +15,7 @@ final class HomeNavBar: BaseView {
     
     private let searchView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .yellow
         
         return view
     }()

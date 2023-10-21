@@ -1,15 +1,15 @@
 //
-//  HomeCategoryCell.swift
+//  HomeProductListCell.swift
 //  E-commerceApp
 //
-//  Created by Артур Наврузов on 20.10.2023.
+//  Created by Артур Наврузов on 21.10.2023.
 //
 
 import UIKit
 
-class HomeCategoryCell: UITableViewCell {
+class HomeProductListCell: UITableViewCell {
     //MARK: - Public
-    func configure(with model: HomeCategoryCellModel){
+    func configure(with model: HomeProductListCellModel) {
         self.item = model
         collectionView.reloadData()
     }
@@ -19,25 +19,28 @@ class HomeCategoryCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         initialize()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Private constants
+    //MARK: - Private Constants
     private enum UIConstants {
-        static let cellWidth = 57
-        static let cellHeight = 61
-        static let collectionViewWidth = 349
+        static let collectionWidth: CGFloat = 349
+        static let collectionHeight: CGFloat = 892
+        static let cellWidth: CGFloat = 170
+        static let cellHeight: CGFloat = 217
+        static let minimumInteritemSpacing: CGFloat = 9
         static let headerTitleFontSize: CGFloat = 14
-        static let headerHeight: CGFloat = 17
         static let headerTitleOffsetLT: CGFloat = 21
-        static let collectionToHeaderOffset: CGFloat = 13
+        static let headerTitleOffsetTB: CGFloat = 5
+        static let headerHeight: CGFloat = 27
+        static let collectionToHeaderOffset: CGFloat = 21
     }
     
     //MARK: - Private Properties
     private var collectionView: UICollectionView!
-    private var item: HomeCategoryCellModel = []
+    private var item: HomeProductListCellModel = []
     
     private let header: UIView = {
         let view = UIView()
@@ -46,14 +49,14 @@ class HomeCategoryCell: UITableViewCell {
     }()
     private let headerTitle: UILabel = {
         let title = UILabel()
-        title.text = "Category"
+        title.text = "Recent product"
         title.font = Resources.Fonts.systemWeight(with: UIConstants.headerTitleFontSize, weight: .medium)
         return title
     }()
 }
 
 //MARK: - Private method
-private extension HomeCategoryCell {
+extension HomeProductListCell {
     func initialize() {
         selectionStyle = .none
         contentView.addSubview(header)
@@ -63,50 +66,50 @@ private extension HomeCategoryCell {
         }
         header.addSubview(headerTitle)
         headerTitle.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
+            make.top.bottom.equalToSuperview().offset(UIConstants.headerTitleOffsetTB)
             make.leading.trailing.equalToSuperview().offset(UIConstants.headerTitleOffsetLT)
         }
-
-        //MARK: - CollectionView Layout
+        
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 16
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = UIConstants.minimumInteritemSpacing
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-        //MARK: - Register
-        collectionView.register(CategoryItemCell.self, forCellWithReuseIdentifier: String(describing: CategoryItemCell.self))
-        
-        collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isScrollEnabled = false
+        
+        collectionView.register(ProductItemCell.self, forCellWithReuseIdentifier: String(describing: ProductItemCell.self))
+        collectionView.dataSource = self
         
         //MARK: - CollectionView Constraints
         contentView.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(header.snp.bottom).offset(UIConstants.collectionToHeaderOffset)
-            make.height.equalTo(UIConstants.cellHeight)
-            make.width.equalTo(UIConstants.collectionViewWidth)
+            make.width.equalTo(UIConstants.collectionWidth)
+            make.height.equalTo(UIConstants.collectionHeight)
             make.centerX.equalTo(contentView.snp.centerX)
             make.bottom.equalToSuperview()
         }
     }
 }
 
-//MARK: - UICollectionViewDataSource
-extension HomeCategoryCell: UICollectionViewDataSource {
+//MARK: -
+extension HomeProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         item.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CategoryItemCell.self), for: indexPath) as! CategoryItemCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProductItemCell.self), for: indexPath) as! ProductItemCell
         cell.configure(with: item[indexPath.row])
         return cell
     }
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout
-extension HomeCategoryCell: UICollectionViewDelegateFlowLayout {
+extension HomeProductListCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: UIConstants.cellWidth, height: UIConstants.cellHeight)
     }
 }
+
+
+

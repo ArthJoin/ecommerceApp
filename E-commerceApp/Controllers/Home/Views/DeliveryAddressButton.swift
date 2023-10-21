@@ -62,7 +62,7 @@ private extension DeliveryAddressButton {
         title.text = Resources.Strings.home.deliveryAddressButton
         title.font = Resources.Fonts.helveticaRegular(with: 10)
         
-        label.textColor = Resources.Colors.titleGray
+        label.textColor = Resources.Colors.titleMain
         label.font = Resources.Fonts.helveticaRegular(with: 12)
         
         iconView.image = Resources.Images.common.downArrow

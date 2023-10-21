@@ -14,8 +14,9 @@ enum Resources {
         
         static var separator = UIColor(hexString: "#939393")
         static var background = UIColor(hexString: "#FFFFFF")
+        static var backgroundElement = UIColor(hexString: "#FAFAFC")
 
-        static var titleGray = UIColor(hexString: "#393F42")
+        static var titleMain = UIColor(hexString: "#393F42")
         static var secondary = UIColor(hexString: "#C8C8CB")
         
         static var commonIcon = UIColor(hexString: "#200E32")
@@ -74,6 +75,9 @@ enum Resources {
     enum Fonts {
         static func helveticaRegular(with size: CGFloat) -> UIFont {
             UIFont(name: "Helvetica", size: size) ?? UIFont()
+        }
+        static func systemWeight(with size: CGFloat, weight: UIFont.Weight) -> UIFont {
+            UIFont.systemFont(ofSize: size, weight: weight)
         }
     }
 }

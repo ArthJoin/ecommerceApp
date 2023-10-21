@@ -12,3 +12,5 @@ struct HomeProductListItemModel {
     let title: String
     let subTitle: String
 }
+
+typealias HomeProductListCellModel = [HomeProductListItemModel]

@@ -24,6 +24,16 @@ class HomeController: BaseController {
             HomeCategoryItemModel(image: DummyData.category.one!, title: DummyData.category.second),
             HomeCategoryItemModel(image: DummyData.category.one!, title: DummyData.category.second),
             HomeCategoryItemModel(image: DummyData.category.one!, title: DummyData.category.second),
+        ]),
+        .productList([
+            HomeProductListItemModel(image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle)
         ])
     ]
 }
@@ -55,7 +65,9 @@ extension HomeController {
         tableView.dataSource = self
         tableView.register(HomeBannerCell.self, forCellReuseIdentifier: String(describing: HomeBannerCell.self))
         tableView.register(HomeCategoryCell.self, forCellReuseIdentifier: String(describing: HomeCategoryCell.self))
-        //tableView.separatorColor = .clear
+        tableView.register(HomeProductListCell.self, forCellReuseIdentifier: String(describing: HomeProductListCell.self))
+        tableView.separatorColor = .clear
+        tableView.showsVerticalScrollIndicator = false
     }
 }
 
@@ -75,7 +87,10 @@ extension HomeController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: HomeCategoryCell.self), for: indexPath) as! HomeCategoryCell
             cell.configure(with: category)
             return cell
+        case .productList(let product):
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: HomeProductListCell.self), for: indexPath) as! HomeProductListCell
+            cell.configure(with: product)
+            return cell
         }
     }
 }
-

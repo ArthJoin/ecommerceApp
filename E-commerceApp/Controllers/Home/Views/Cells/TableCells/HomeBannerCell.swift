@@ -51,6 +51,8 @@ private extension HomeBannerCell {
         }
     }
     func configureAppearance() {
+        selectionStyle = .none
+
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
