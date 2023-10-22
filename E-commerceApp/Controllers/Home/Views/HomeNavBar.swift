@@ -13,12 +13,7 @@ final class HomeNavBar: BaseView {
     private let notificationButton = UIButton()
     private let basketButton = UIButton()
     
-    private let searchView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .yellow
-        
-        return view
-    }()
+    private let searchView = HomeSearchBar()
         
     func addDeliveryButtonAction(_ action: Selector, _ target: Any?) {
         deliveryAddressButton.addTarget(self, action: action, for: .touchUpInside)
@@ -37,7 +32,6 @@ extension HomeNavBar {
         addView(deliveryAddressButton)
         addView(notificationButton)
         addView(basketButton)
-        
         addView(searchView)
     }
     
@@ -56,7 +50,7 @@ extension HomeNavBar {
             searchView.topAnchor.constraint(equalTo: basketButton.bottomAnchor, constant: 15),
             searchView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             searchView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
-            searchView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
+            searchView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
             searchView.heightAnchor.constraint(equalToConstant: 40)
         ])
         
@@ -68,5 +62,8 @@ extension HomeNavBar {
         deliveryAddressButton.setTitle("Almaty Al-farabi 15 k4v 412")        
         notificationButton.setImage(Resources.Images.common.notififcation, for: .normal)
         basketButton.setImage(Resources.Images.common.basket, for: .normal)
+        searchView.layer.borderColor = Resources.Colors.transpulentGray.cgColor
+        searchView.layer.borderWidth = 1
+        searchView.layer.cornerRadius = 7
     }
 }

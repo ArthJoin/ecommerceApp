@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		664453482AE5B9E7008AB50A /* HomeSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664453472AE5B9E7008AB50A /* HomeSearchBar.swift */; };
 		666856F72AE001090018B94C /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666856F62AE001090018B94C /* DummyData.swift */; };
 		666857022AE052D10018B94C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 666857012AE052D10018B94C /* SnapKit */; };
 		666857042AE0537D0018B94C /* HomeItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666857032AE0537D0018B94C /* HomeItemType.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		664453472AE5B9E7008AB50A /* HomeSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchBar.swift; sourceTree = "<group>"; };
 		666856F62AE001090018B94C /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		666857032AE0537D0018B94C /* HomeItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItemType.swift; sourceTree = "<group>"; };
 		666857052AE0540D0018B94C /* HomeBannerItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerItemModel.swift; sourceTree = "<group>"; };
@@ -215,8 +217,8 @@
 			children = (
 				666857072AE0548C0018B94C /* Model */,
 				66A561302AD86E10004527FF /* Views */,
-				66A561022AD6CCAE004527FF /* HomeController.swift */,
 				666857032AE0537D0018B94C /* HomeItemType.swift */,
+				66A561022AD6CCAE004527FF /* HomeController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -250,6 +252,7 @@
 			children = (
 				6668570E2AE058430018B94C /* Cells */,
 				66A561312AD86EA4004527FF /* DeliveryAddressButton.swift */,
+				664453472AE5B9E7008AB50A /* HomeSearchBar.swift */,
 				6685B0FE2AD94D95004E15C5 /* HomeNavBar.swift */,
 			);
 			path = Views;
@@ -335,6 +338,7 @@
 				6668571A2AE2C3560018B94C /* HomeCategoryCell.swift in Sources */,
 				666857092AE054AC0018B94C /* HomeCategoryItemModel.swift in Sources */,
 				66A561032AD6CCAE004527FF /* HomeController.swift in Sources */,
+				664453482AE5B9E7008AB50A /* HomeSearchBar.swift in Sources */,
 				66A561152AD6D00E004527FF /* TabBarController.swift in Sources */,
 				66A560FF2AD6CCAE004527FF /* AppDelegate.swift in Sources */,
 				66B31EF12AE4670D0093C5F1 /* ProductItemCell.swift in Sources */,

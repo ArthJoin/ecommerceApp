@@ -15,6 +15,7 @@ enum Resources {
         static var separator = UIColor(hexString: "#939393")
         static var background = UIColor(hexString: "#FFFFFF")
         static var backgroundElement = UIColor(hexString: "#FAFAFC")
+        static var transpulentGray = UIColor(hexString: "#F0F2F1")
 
         static var titleMain = UIColor(hexString: "#393F42")
         static var secondary = UIColor(hexString: "#C8C8CB")
@@ -69,6 +70,7 @@ enum Resources {
             static var downArrow = UIImage(named: "down_arrow")
             static var notififcation = UIImage(named: "Notification_icon")
             static var basket = UIImage(named: "basket_icon")
+            static var search = UIImage(named: "Search")
         }
     }
     
