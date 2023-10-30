@@ -22,3 +22,4 @@ enum DummyData {
         static var subTitle = "$199.99"
     }
 }
+

@@ -33,7 +33,6 @@ class HomeSearchBar: UISearchBar {
         search.searchTextField.font = Resources.Fonts.helveticaRegular(with: 13)
         search.setImage(Resources.Images.common.search, for: .search, state: .normal)
         search.searchTextField.attributedPlaceholder = NSAttributedString(string: " Search here ...", attributes: [NSAttributedString.Key.foregroundColor: Resources.Colors.transpulentGray])
-
         return search
     }()
 }
@@ -46,10 +45,15 @@ private extension HomeSearchBar {
         searchBar.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+
     }
 }
 
 //MARK: - UISearchBarDelegate
 extension HomeSearchBar: UISearchBarDelegate {
-    //Обработать нажатие
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("tapped")
+    }
 }
+

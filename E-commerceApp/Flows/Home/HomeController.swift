@@ -26,16 +26,17 @@ class HomeController: BaseController {
             HomeCategoryItemModel(image: DummyData.category.one!, title: DummyData.category.second),
         ]),
         .productList([
-            HomeProductListItemModel(image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle)
+            HomeProductListItemModel(id: 0, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 2, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 3, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 4, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 5, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 6, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 7, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle)
         ])
     ]
+
 }
 
 extension HomeController {
@@ -68,6 +69,11 @@ extension HomeController {
         tableView.register(HomeProductListCell.self, forCellReuseIdentifier: String(describing: HomeProductListCell.self))
         tableView.separatorColor = .clear
         tableView.showsVerticalScrollIndicator = false
+        
+        //
+        
+        
+        
     }
 }
 
@@ -90,7 +96,19 @@ extension HomeController: UITableViewDataSource {
         case .productList(let product):
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: HomeProductListCell.self), for: indexPath) as! HomeProductListCell
             cell.configure(with: product)
+            cell.delegate = self
             return cell
         }
     }
 }
+
+extension HomeController: HomeProductListCellDelegate {
+    func didSelectItem(with id: HomeProductListItemModel) {
+        let secondViewController = ProductDetailController()
+        secondViewController.configure(with: id)
+        navigationController?.pushViewController(secondViewController, animated: true)
+    }
+}
+
+
+

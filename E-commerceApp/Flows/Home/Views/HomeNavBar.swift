@@ -14,16 +14,6 @@ final class HomeNavBar: BaseView {
     private let basketButton = UIButton()
     
     private let searchView = HomeSearchBar()
-        
-    func addDeliveryButtonAction(_ action: Selector, _ target: Any?) {
-        deliveryAddressButton.addTarget(self, action: action, for: .touchUpInside)
-    }
-    func addNotificationButtonAction(_ action: Selector, _ target: Any?) {
-        notificationButton.addTarget(self, action: action, for: .touchUpInside)
-    }
-    func addBasketButtonAction(_ action: Selector, _ target: Any?) {
-        basketButton.addTarget(self, action: action, for: .touchUpInside)
-    }
 }
 
 extension HomeNavBar {
@@ -58,12 +48,23 @@ extension HomeNavBar {
     
     override func configureAppearance() {
         super.configureAppearance()
+        
+        
         backgroundColor = .white
         deliveryAddressButton.setTitle("Almaty Al-farabi 15 k4v 412")        
         notificationButton.setImage(Resources.Images.common.notififcation, for: .normal)
         basketButton.setImage(Resources.Images.common.basket, for: .normal)
+        
+        
         searchView.layer.borderColor = Resources.Colors.transpulentGray.cgColor
         searchView.layer.borderWidth = 1
         searchView.layer.cornerRadius = 7
+        
+        basketButton.addTarget(self, action: #selector(basketButtonAction), for: .touchUpInside)
+    }
+}
+
+extension HomeNavBar {
+    @objc func basketButtonAction() {
     }
 }

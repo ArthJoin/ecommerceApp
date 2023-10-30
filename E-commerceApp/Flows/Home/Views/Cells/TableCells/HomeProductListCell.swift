@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol HomeProductListCellDelegate: AnyObject {
+    func didSelectItem(with id: HomeProductListItemModel)
+}
+
 class HomeProductListCell: UITableViewCell {
+    weak var delegate: HomeProductListCellDelegate?
+    
     //MARK: - Public
     func configure(with model: HomeProductListCellModel) {
         self.item = model
@@ -100,6 +106,9 @@ extension HomeProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProductItemCell.self), for: indexPath) as! ProductItemCell
         cell.configure(with: item[indexPath.row])
+        cell.buttonAction = { [weak self] id in
+            self?.delegate?.didSelectItem(with: id)
+        }
         return cell
     }
 }

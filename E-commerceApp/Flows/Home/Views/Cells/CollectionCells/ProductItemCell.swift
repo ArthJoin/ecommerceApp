@@ -8,8 +8,11 @@
 import UIKit
 
 class ProductItemCell: UICollectionViewCell {
+    var buttonAction: ((HomeProductListItemModel) -> Void)?
+    
     //MARK: - Public
     func configure(with model: HomeProductListItemModel){
+        item = model 
         image.image = model.image
         title.text = model.title
         subTitle.text = model.subTitle
@@ -39,6 +42,8 @@ class ProductItemCell: UICollectionViewCell {
     }
     
     //MARK: Private Properties
+    private var item: HomeProductListItemModel!
+    
     private let view: UIView = {
         let view = UIView()
         view.backgroundColor = Resources.Colors.backgroundElement
@@ -101,6 +106,14 @@ extension ProductItemCell {
             make.leading.trailing.equalToSuperview().inset(UIConstants.insertOffset)
             make.bottom.equalToSuperview().inset(UIConstants.insertOffset)
         }
+        
+        //MARK: - AddToCartBtnAction
+        makeSystem(button)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+    }
+    
+    @objc func buttonTapped() {
+        buttonAction?(item)
     }
 }
 

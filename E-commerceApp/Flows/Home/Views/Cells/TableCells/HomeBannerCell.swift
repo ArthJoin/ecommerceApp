@@ -55,6 +55,7 @@ private extension HomeBannerCell {
 
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        layout.sectionInset = UIEdgeInsets.init(top: 0, left: 22, bottom: 0, right: 0)
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(BannerItemCell.self, forCellWithReuseIdentifier: String(describing: BannerItemCell.self))
         collectionView.dataSource = self
