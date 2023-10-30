@@ -7,6 +7,6 @@
 
 enum ProductDetailModel {
     case productDetail(HomeProductListItemModel)
-//    case marketDetail
-//    case productDiscription
+    case marketDetail(MarketInfoModel)
+    case productDiscription
 }

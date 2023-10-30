@@ -28,12 +28,12 @@ class HomeController: BaseController {
         .productList([
             HomeProductListItemModel(id: 0, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
             HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 2, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 3, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 4, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 5, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 6, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 7, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle)
+            HomeProductListItemModel(id: 0, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 0, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 0, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
+            HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle)
         ])
     ]
 

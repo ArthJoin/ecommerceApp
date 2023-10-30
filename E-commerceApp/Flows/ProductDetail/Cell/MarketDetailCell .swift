@@ -7,16 +7,18 @@
 
 import UIKit
 
-class MarketDetailCell: UITableViewCell {
+final class MarketDetailCell: UITableViewCell {
     //MARK: - Public
-    func configure() {
-        
+    func configure(with model: MarketInfoModel) {
+        marketLogo.image = model.image
+        marketName.text = model.marketName
+        marketOnline.text = model.marketLastOnline
     }
     
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        initialize()
     }
     
     required init?(coder: NSCoder) {
@@ -53,8 +55,9 @@ class MarketDetailCell: UITableViewCell {
     private let followBtn: UIButton = {
         let btn = UIButton()
         btn.setTitle("Follow", for: .normal)
-        btn.layer.borderWidth = 1.5
-        btn.layer.borderColor = Resources.Colors.backgroundElement.cgColor
+        btn.titleLabel?.font = Resources.Fonts.helveticaRegular(with: 12)
+        btn.layer.borderWidth = 1
+        btn.layer.borderColor = Resources.Colors.secondary.cgColor
         btn.layer.cornerRadius = 5
         btn.setTitleColor(.black, for: .normal)
         return btn
@@ -66,7 +69,26 @@ extension MarketDetailCell {
     func initialize() {
         contentView.addSubview(marketLogo)
         marketLogo.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(10)
+            make.bottom.equalToSuperview().inset(10)
+            make.leading.equalToSuperview().offset(10)
+            make.size.equalTo(UIConstants.logoSize)
+        }
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.addArrangedSubview(marketName)
+        stack.addArrangedSubview(marketOnline)
+        contentView.addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.centerY.equalTo(marketLogo)
+            make.leading.equalTo(marketLogo.snp.trailing).offset(10)
+        }
+        contentView.addSubview(followBtn)
+        followBtn.snp.makeConstraints { make in
+            make.centerY.equalTo(marketLogo)
+            make.trailing.equalToSuperview().inset(20)
+            make.width.equalTo(90)
+            make.height.equalTo(40)
         }
     }
 }
