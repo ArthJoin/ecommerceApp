@@ -67,7 +67,6 @@ enum Resources {
         }
         
         enum common {
-            static var downArrow = UIImage(named: "down_arrow")
             static var notififcation = UIImage(named: "Notification_icon")
             static var basket = UIImage(named: "basket_icon")
             static var search = UIImage(named: "Search")

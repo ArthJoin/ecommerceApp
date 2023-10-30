@@ -8,15 +8,14 @@
 import UIKit
 
 final class DeliveryAddressButton: UIButton {
+    //MARK: - Public
+    func setTitle(_ title: String) {
+        deliveryAddress.text = title
+    }
     
-    private let title = UILabel()
-    private let label = UILabel()
-    private let iconView = UIImageView()
-    
+    //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addViews()
-        layoutViews()
         configure()
     }
     
@@ -24,48 +23,36 @@ final class DeliveryAddressButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setTitle(_ title: String) {
-        label.text = title
-    }
+    //MARK: - Private Properties
+    private let deliveryAddress: UILabel = {
+        let label = UILabel()
+        label.textColor =  Resources.Colors.titleMain
+        label.font = Resources.Fonts.helveticaRegular(with: 12)
+        return label
+    }()
+    private let downArrow: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(systemName: "chevron.down")
+        image.tintColor = Resources.Colors.commonIcon
+        return image
+    }()
 }
 
 private extension DeliveryAddressButton {
-    func addViews() {
-        addView(title)
-        addView(label)
-        addView(iconView)
-    }
-    
-    func layoutViews() {
-        NSLayoutConstraint.activate([
-            iconView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            iconView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            iconView.heightAnchor.constraint(equalToConstant: 12),
-            iconView.widthAnchor.constraint(equalToConstant: 12),
-            
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
-            label.trailingAnchor.constraint(equalTo: iconView.leadingAnchor, constant: -7),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            label.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 1),
-            
-            title.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            title.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            
-        ])
-    }
-    
     func configure() {
         backgroundColor = .white
         makeSystem(self)
-        
-        title.textColor = Resources.Colors.secondary
-        title.text = Resources.Strings.home.deliveryAddressButton
-        title.font = Resources.Fonts.helveticaRegular(with: 10)
-        
-        label.textColor = Resources.Colors.titleMain
-        label.font = Resources.Fonts.helveticaRegular(with: 12)
-        
-        iconView.image = Resources.Images.common.downArrow
-        iconView.tintColor = Resources.Colors.commonIcon
+        addSubview(deliveryAddress)
+        deliveryAddress.snp.makeConstraints { make in
+            make.leading.top.bottom.equalToSuperview()
+        }
+        addSubview(downArrow)
+        downArrow.snp.makeConstraints { make in
+            make.leading.equalTo(deliveryAddress.snp.trailing).offset(5)
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(15)
+            make.width.equalTo(10)
+        }
     }
 }

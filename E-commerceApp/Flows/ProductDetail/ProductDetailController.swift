@@ -21,16 +21,17 @@ class ProductDetailController: BaseController {
         setupTableView()
         navBar.delegate = self
         navBar.configure(with: "Details Product")
+        navBar.textAlignment(isCenter: true)
     }
     
     //MARK: - Private properties
     private let tableView = UITableView()
     private var item: [ProductDetailModel] = []
-    private let navBar = ProductDetailNavBar()
+    private let navBar = GeneralNavigationBar()
     
 }
 
-extension ProductDetailController: SecondNavigationBar {
+extension ProductDetailController: GeneralNavigationBarDelegate {
     func didBackBtnAction() {
         navigationController?.popViewController(animated: true)
     }

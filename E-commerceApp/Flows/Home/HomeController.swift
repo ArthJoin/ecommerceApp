@@ -36,7 +36,6 @@ class HomeController: BaseController {
             HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle)
         ])
     ]
-
 }
 
 extension HomeController {
@@ -70,10 +69,8 @@ extension HomeController {
         tableView.separatorColor = .clear
         tableView.showsVerticalScrollIndicator = false
         
-        //
-        
-        
-        
+        //MARK: - Delegate
+        navBar.delegate = self
     }
 }
 
@@ -102,6 +99,7 @@ extension HomeController: UITableViewDataSource {
     }
 }
 
+//MARK: - HomeProductListCellDelegate
 extension HomeController: HomeProductListCellDelegate {
     func didSelectItem(with id: HomeProductListItemModel) {
         let secondViewController = ProductDetailController()
@@ -110,5 +108,10 @@ extension HomeController: HomeProductListCellDelegate {
     }
 }
 
-
-
+//MARK: - BasketBtnDelegate
+extension HomeController: BasketBtnDelegate {
+    func didBasketAction() {
+        let secondViewController = BasketVC()
+        navigationController?.pushViewController(secondViewController, animated: true)
+    }
+}

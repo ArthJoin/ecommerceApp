@@ -7,23 +7,32 @@
 
 import UIKit
 
-protocol SecondNavigationBar: AnyObject {
+protocol GeneralNavigationBarDelegate: AnyObject {
     func didBackBtnAction()
 }
 
-class ProductDetailNavBar: BaseView {
+class GeneralNavigationBar: BaseView {
     //MARK: - Public
     func configure(with text: String) {
         title.text = text
     }
-    weak var delegate: SecondNavigationBar?
+    func textAlignment(isCenter alignment: Bool) {
+        if alignment {
+            title.textAlignment = .center
+        }
+    }
+    func rightBtnImage(isNotification: Bool) {
+        rightBtn.setImage(Resources.Images.common.notififcation, for: .normal)
+    }
+    
+    weak var delegate: GeneralNavigationBarDelegate?
     
     private let title: UILabel = {
         let label = UILabel()
         label.font = Resources.Fonts.systemWeight(with: 15, weight: .medium)
         return label
     }()
-    private let basket: UIButton = {
+    private let rightBtn: UIButton = {
         let btn = UIButton()
         btn.setImage(Resources.Images.common.basket, for: .normal)
         return btn
@@ -36,20 +45,21 @@ class ProductDetailNavBar: BaseView {
     }()
 }
 
-extension ProductDetailNavBar {
+extension GeneralNavigationBar {
     override func setupViews() {
         super.setupViews()
         addSubview(title)
-        addSubview(basket)
+        addSubview(rightBtn)
         addSubview(backBtn)
     }
     override func constaintViews() {
         super.constaintViews()
         title.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
+            make.trailing.equalTo(rightBtn.snp.leading)
+            make.leading.equalTo(backBtn.snp.trailing).offset(20)
             make.top.bottom.equalToSuperview().inset(20)
         }
-        basket.snp.makeConstraints { make in
+        rightBtn.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(20)
             make.centerY.equalTo(title)
         }
@@ -67,7 +77,7 @@ extension ProductDetailNavBar {
 }
 
 //MARK: - Private Method
-extension ProductDetailNavBar {
+extension GeneralNavigationBar {
     @objc func backBtnAction() {
         delegate?.didBackBtnAction()
     }
