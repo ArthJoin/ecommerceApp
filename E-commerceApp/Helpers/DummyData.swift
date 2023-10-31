@@ -23,9 +23,3 @@ enum DummyData {
     }
 }
 
-enum MarketData {
-    static let item: [MarketInfoModel] = [
-        .init(id: 0, image: Resources.Images.common.notififcation!, marketName: "NotificationMarket", marketLastOnline: "12 hour ago"),
-        .init(id: 1, image: Resources.Images.common.basket!, marketName: "BasketMarket", marketLastOnline: "1 min ago")
-    ]
-}

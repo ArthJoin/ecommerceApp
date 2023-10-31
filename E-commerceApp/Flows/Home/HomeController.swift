@@ -11,31 +11,8 @@ import SnapKit
 class HomeController: BaseController {
     //MARK: - Private properties
     private let navBar = HomeNavBar()
-    private let tableView = UITableView()
-    private let items: [HomeItemType] = [
-        .banner([
-            HomeBannerItemModel(image: DummyData.banner.first!),
-            HomeBannerItemModel(image: DummyData.banner.first!),
-            HomeBannerItemModel(image: DummyData.banner.first!)
-        ]),
-        .category([
-            HomeCategoryItemModel(image: DummyData.category.one!, title: DummyData.category.second),
-            HomeCategoryItemModel(image: DummyData.category.one!, title: DummyData.category.second),
-            HomeCategoryItemModel(image: DummyData.category.one!, title: DummyData.category.second),
-            HomeCategoryItemModel(image: DummyData.category.one!, title: DummyData.category.second),
-            HomeCategoryItemModel(image: DummyData.category.one!, title: DummyData.category.second),
-        ]),
-        .productList([
-            HomeProductListItemModel(id: 0, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 0, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 0, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 0, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle),
-            HomeProductListItemModel(id: 1, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle)
-        ])
-    ]
+    private let tableView = UITableView()    
+    private var items: [HomeItemType] = MocNetworkManager.shared.getHomeDB()
 }
 
 extension HomeController {
@@ -113,5 +90,6 @@ extension HomeController: BasketBtnDelegate {
     func didBasketAction() {
         let secondViewController = BasketVC()
         navigationController?.pushViewController(secondViewController, animated: true)
+        tabBarController?.tabBar.isHidden = true
     }
 }

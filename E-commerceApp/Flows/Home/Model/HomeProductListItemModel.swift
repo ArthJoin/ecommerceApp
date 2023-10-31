@@ -8,7 +8,8 @@
 import UIKit
 
 struct HomeProductListItemModel {
-    let id: Int
+    let marketId: Int
+    let productId: Int
     let image: UIImage
     let title: String
     let subTitle: String

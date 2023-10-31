@@ -11,7 +11,7 @@ class ProductDetailController: BaseController {
     //MARK: - Public
     func configure(with model: HomeProductListItemModel) {
         item.append(.productDetail(model))
-        getMarketInfo(with: model.id)
+        item.append(.marketDetail(MocNetworkManager.shared.getMarketInfo(with: model.marketId)))
         item.append(.productDiscription)
     }
     
@@ -22,27 +22,40 @@ class ProductDetailController: BaseController {
         navBar.delegate = self
         navBar.configure(with: "Details Product")
         navBar.textAlignment(isCenter: true)
+        tabBarController?.tabBar.isHidden = true
     }
     
     //MARK: - Private properties
     private let tableView = UITableView()
     private var item: [ProductDetailModel] = []
     private let navBar = GeneralNavigationBar()
-    
+    private let footer = FooterProductDetail()
 }
 
+//MARK: - GeneralNavigationBarDelegate
 extension ProductDetailController: GeneralNavigationBarDelegate {
-    func didBackBtnAction() {
+    func didBackBtnActionEnableTabBar() {
         navigationController?.popViewController(animated: true)
+        if navigationController?.viewControllers.count == 1 {
+            tabBarController?.tabBar.isHidden = false
+        }
+    }
+    func rightBtnAction() {
+        navigationController?.pushViewController(BasketVC(), animated: true)
     }
 }
 
+//MARK: - Private Method
 private extension ProductDetailController {
     func setupTableView() {
         view.addSubview(navBar)
         navBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.trailing.leading.equalToSuperview()
+        }
+        view.addSubview(footer)
+        footer.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         tableView.dataSource = self
@@ -53,21 +66,11 @@ private extension ProductDetailController {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.top.equalTo(navBar.snp.bottom)
-            make.trailing.leading.bottom.equalToSuperview()
+            make.trailing.leading.equalToSuperview()
+            make.bottom.equalTo(footer.snp.top)
         }
         tableView.separatorColor = Resources.Colors.secondary
         tableView.allowsSelection = false
-    }
-    
-    func getMarketInfo(with id: Int) {
-        let data = MarketData.item
-        for i in data {
-            if i.id == id {
-                item.append(.marketDetail(i))
-            } else {
-                continue
-            }
-        }
     }
 }
 

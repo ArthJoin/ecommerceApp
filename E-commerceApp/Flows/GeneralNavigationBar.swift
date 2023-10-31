@@ -8,7 +8,8 @@
 import UIKit
 
 protocol GeneralNavigationBarDelegate: AnyObject {
-    func didBackBtnAction()
+    func didBackBtnActionEnableTabBar()
+    func rightBtnAction()
 }
 
 class GeneralNavigationBar: BaseView {
@@ -73,12 +74,16 @@ extension GeneralNavigationBar {
         backgroundColor = .white
         backBtn.addTarget(self, action: #selector(backBtnAction), for: .touchUpInside)
         makeSystem(backBtn)
+        rightBtn.addTarget(self, action: #selector(rightBtnAction), for: .touchUpInside)
     }
 }
 
 //MARK: - Private Method
 extension GeneralNavigationBar {
     @objc func backBtnAction() {
-        delegate?.didBackBtnAction()
+        delegate?.didBackBtnActionEnableTabBar()
+    }
+    @objc func rightBtnAction() {
+        delegate?.rightBtnAction()
     }
 }

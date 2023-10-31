@@ -7,18 +7,26 @@
 
 import UIKit
 
+//MARK: - Delegate
+protocol ProductDetailCellDelegate: AnyObject {
+    func didAddToCardWithProductId(with productId: Int)
+}
+
 final class ProductDetailCell: UITableViewCell {
     //MARK: - Public
     func configure(wiht item: HomeProductListItemModel) {
+        self.item = item
         productImage.image = item.image
         itemName.text = item.title
         itemPrice.text = item.subTitle
     }
+    weak var delegate: ProductDetailCellDelegate?
     
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         initialize()
+        footerBtnTapped.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -26,6 +34,8 @@ final class ProductDetailCell: UITableViewCell {
     }
     
     //MARK: - Private Properties
+    private var footerBtnTapped = FooterProductDetail()
+    private var item: HomeProductListItemModel?
     private let productImage: UIImageView = {
         let image = UIImageView()
         image.image = DummyData.products.one
@@ -45,13 +55,18 @@ final class ProductDetailCell: UITableViewCell {
     }()
     private let wishlistBtn: UIButton = {
         let btn = UIButton()
-        btn.setImage(Resources.Images.TabBar.wishlist, for: .normal)
+        if let systemImage = UIImage(systemName: "heart") {
+            let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
+            
+            btn.setImage(resizedImage, for: .normal)
+        }
+        btn.tintColor = Resources.Colors.inactive
         let image = Resources.Images.TabBar.wishlist
-        
         return btn
     }()
 }
 
+//MARK: - Private Method
 private extension ProductDetailCell {
     func initialize() {
         contentView.addSubview(productImage)
@@ -73,10 +88,38 @@ private extension ProductDetailCell {
         contentView.addSubview(wishlistBtn)
         wishlistBtn.snp.makeConstraints { make in
             make.centerY.equalTo(stack)
-            make.top.equalTo(productImage.snp.bottom).offset(20)
-            make.trailing.equalToSuperview().inset(15)
-            make.height.equalTo(40)
-            make.width.equalTo(40)
+            make.trailing.equalToSuperview().inset(20)
         }
+        
+        wishlistBtn.addTarget(self, action: #selector(wishlistBtnAction), for: .touchUpInside)
+    }
+    
+    @objc func wishlistBtnAction() {
+        if wishlistBtn.isSelected {
+            UIView.animate(withDuration: 0.3) {
+                if let systemImage = UIImage(systemName: "heart") {
+                    let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
+                    self.wishlistBtn.setImage(resizedImage, for: .normal)
+                }
+                self.wishlistBtn.tintColor = Resources.Colors.inactive
+            }
+        } else {
+            UIView.animate(withDuration: 0.2) {
+                if let systemImage = UIImage(systemName: "heart.fill") {
+                    let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
+                    self.wishlistBtn.setImage(resizedImage, for: .normal)
+                }
+                self.wishlistBtn.tintColor = .red
+            }
+        }
+        
+        wishlistBtn.isSelected = !wishlistBtn.isSelected
+    }
+}
+
+//MARK: - Delegate
+extension ProductDetailCell: FooterProductDetailDelegate {
+    func didAddToCard() {
+        delegate?.didAddToCardWithProductId(with: item?.productId ?? 101)
     }
 }
