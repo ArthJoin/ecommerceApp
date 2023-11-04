@@ -25,7 +25,10 @@ class GeneralNavigationBar: BaseView {
     func rightBtnImage(isNotification: Bool) {
         rightBtn.setImage(Resources.Images.common.notififcation, for: .normal)
     }
-    
+    func backBtn(isHidden ans: Bool) {
+        backBtn.isHidden = ans 
+    }
+        
     weak var delegate: GeneralNavigationBarDelegate?
     
     private let title: UILabel = {

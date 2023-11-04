@@ -7,11 +7,6 @@
 
 import UIKit
 
-//MARK: - Delegate
-protocol ProductDetailCellDelegate: AnyObject {
-    func didAddToCardWithProductId(with productId: Int)
-}
-
 final class ProductDetailCell: UITableViewCell {
     //MARK: - Public
     func configure(wiht item: HomeProductListItemModel) {
@@ -19,14 +14,13 @@ final class ProductDetailCell: UITableViewCell {
         productImage.image = item.image
         itemName.text = item.title
         itemPrice.text = item.subTitle
+        isWishlist = item.isWishlist
     }
-    weak var delegate: ProductDetailCellDelegate?
     
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         initialize()
-        footerBtnTapped.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -34,6 +28,7 @@ final class ProductDetailCell: UITableViewCell {
     }
     
     //MARK: - Private Properties
+    private let footerDelegate = FooterProductDetail()
     private var footerBtnTapped = FooterProductDetail()
     private var item: HomeProductListItemModel?
     private let productImage: UIImageView = {
@@ -53,15 +48,15 @@ final class ProductDetailCell: UITableViewCell {
         label.font = Resources.Fonts.systemWeight(with: 20, weight: .medium)
         return label
     }()
+    
+    private var isWishlist: Bool?
     private let wishlistBtn: UIButton = {
         let btn = UIButton()
+        btn.tintColor = Resources.Colors.inactive
         if let systemImage = UIImage(systemName: "heart") {
             let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
-            
             btn.setImage(resizedImage, for: .normal)
         }
-        btn.tintColor = Resources.Colors.inactive
-        let image = Resources.Images.TabBar.wishlist
         return btn
     }()
 }
@@ -91,7 +86,7 @@ private extension ProductDetailCell {
             make.trailing.equalToSuperview().inset(20)
         }
         
-        wishlistBtn.addTarget(self, action: #selector(wishlistBtnAction), for: .touchUpInside)
+        wishlistBtn.addTarget(self, action: #selector(wishlistBtnAction), for: .touchUpInside)        
     }
     
     @objc func wishlistBtnAction() {
@@ -117,9 +112,3 @@ private extension ProductDetailCell {
     }
 }
 
-//MARK: - Delegate
-extension ProductDetailCell: FooterProductDetailDelegate {
-    func didAddToCard() {
-        delegate?.didAddToCardWithProductId(with: item?.productId ?? 101)
-    }
-}

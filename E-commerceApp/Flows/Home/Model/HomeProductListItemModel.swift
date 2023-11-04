@@ -13,6 +13,8 @@ struct HomeProductListItemModel {
     let image: UIImage
     let title: String
     let subTitle: String
+    var isWishlist: Bool
+    var isBasket: Bool
 }
 
 typealias HomeProductListCellModel = [HomeProductListItemModel]

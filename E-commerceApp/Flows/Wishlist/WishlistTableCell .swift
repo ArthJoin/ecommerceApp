@@ -1,18 +1,18 @@
 //
-//  BasketTableCell.swift
+//  WishlistTableCell .swift
 //  E-commerceApp
 //
-//  Created by Артур Наврузов on 31.10.2023.
+//  Created by Артур Наврузов on 02.11.2023.
 //
 
 import UIKit
 
-final class BasketTableCell: UITableViewCell {
+final class WishlistTableCell: UITableViewCell {
     //MARK: - Public
-    func configure(with product: HomeProductListItemModel) {
-        productImage.image = product.image
-        productName.text = product.title
-        productPrice.text = product.subTitle
+    func configure(with item: HomeProductListItemModel) {
+        productImage.image = item.image
+        productName.text = item.title
+        productPrice.text = item.subTitle
     }
     
     //MARK: - Init
@@ -24,7 +24,6 @@ final class BasketTableCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     //MARK: - Private Properties
     private let chekbox: UIButton = {
@@ -40,24 +39,27 @@ final class BasketTableCell: UITableViewCell {
     private let productImage: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 5
+        image.image = DummyData.products.one
         return image
     }()
     
     private let productName: UILabel = {
         let label = UILabel()
         label.font = Resources.Fonts.systemWeight(with: 12, weight: .medium)
+        label.text = DummyData.products.title
         return label
     }()
     
     private let productPrice: UILabel = {
         let label = UILabel()
         label.font = Resources.Fonts.systemWeight(with: 15, weight: .medium)
+        label.text = DummyData.products.subTitle
         return label
     }()
 }
 
 //MARK: - Private Methods
-extension BasketTableCell {
+extension WishlistTableCell {
     func initialize() {
         contentView.addSubview(chekbox)
         chekbox.snp.makeConstraints { make in
@@ -81,13 +83,13 @@ extension BasketTableCell {
             make.leading.equalTo(productImage.snp.trailing).offset(10)
             make.centerY.equalTo(productImage)
         }
-
-        chekbox.addTarget(self, action: #selector(chekboxTapped), for: .touchUpInside)
+        //
         
+        chekbox.addTarget(self, action: #selector(chekboxTapped), for: .touchUpInside)
     }
 }
 
-extension BasketTableCell {
+extension WishlistTableCell {
     @objc func chekboxTapped() {
         if chekbox.isSelected {
             UIView.animate(withDuration: 0.2) {

@@ -67,9 +67,9 @@ extension HomeController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: HomeCategoryCell.self), for: indexPath) as! HomeCategoryCell
             cell.configure(with: category)
             return cell
-        case .productList(let product):
+        case .productList:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: HomeProductListCell.self), for: indexPath) as! HomeProductListCell
-            cell.configure(with: product)
+            cell.configure()
             cell.delegate = self
             return cell
         }
@@ -78,7 +78,7 @@ extension HomeController: UITableViewDataSource {
 
 //MARK: - HomeProductListCellDelegate
 extension HomeController: HomeProductListCellDelegate {
-    func didSelectItem(with id: HomeProductListItemModel) {
+    func didSelectItem(with id: Int) {
         let secondViewController = ProductDetailController()
         secondViewController.configure(with: id)
         navigationController?.pushViewController(secondViewController, animated: true)
@@ -88,8 +88,10 @@ extension HomeController: HomeProductListCellDelegate {
 //MARK: - BasketBtnDelegate
 extension HomeController: BasketBtnDelegate {
     func didBasketAction() {
-        let secondViewController = BasketVC()
-        navigationController?.pushViewController(secondViewController, animated: true)
+        let secondVC = BasketVC()
+        let productList = MocNetworkManager.shared.getBasketProductList()
+        secondVC.configure(with: productList)
+        navigationController?.pushViewController(secondVC, animated: true)
         tabBarController?.tabBar.isHidden = true
     }
 }

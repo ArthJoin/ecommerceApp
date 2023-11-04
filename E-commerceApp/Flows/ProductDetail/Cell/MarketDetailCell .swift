@@ -71,7 +71,7 @@ extension MarketDetailCell {
         marketLogo.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
             make.bottom.equalToSuperview().inset(10)
-            make.leading.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().offset(15)
             make.size.equalTo(UIConstants.logoSize)
         }
         let stack = UIStackView()

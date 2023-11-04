@@ -8,14 +8,14 @@
 import UIKit
 
 class ProductItemCell: UICollectionViewCell {
-    var buttonAction: ((HomeProductListItemModel) -> Void)?
+    var buttonAction: ((Int) -> Void)?
     
     //MARK: - Public
-    func configure(with model: HomeProductListItemModel){
-        item = model 
-        image.image = model.image
-        title.text = model.title
-        subTitle.text = model.subTitle
+    func configure(with product: HomeProductListItemModel){
+        item = product
+        image.image = product.image
+        title.text = product.title
+        subTitle.text = product.subTitle
     }
     
     //MARK: - init
@@ -113,7 +113,7 @@ extension ProductItemCell {
     }
     
     @objc func buttonTapped() {
-        buttonAction?(item)
+        buttonAction?(item.productId)
     }
 }
 

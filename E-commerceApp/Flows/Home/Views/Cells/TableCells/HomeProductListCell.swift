@@ -8,15 +8,16 @@
 import UIKit
 
 protocol HomeProductListCellDelegate: AnyObject {
-    func didSelectItem(with id: HomeProductListItemModel)
+    func didSelectItem(with id: Int)
 }
 
 class HomeProductListCell: UITableViewCell {
     weak var delegate: HomeProductListCellDelegate?
     
     //MARK: - Public
-    func configure(with model: HomeProductListCellModel) {
-        self.item = model
+    func configure() {
+        let product = MocNetworkManager.shared.getProductList()
+        self.item = product
         collectionView.reloadData()
     }
     

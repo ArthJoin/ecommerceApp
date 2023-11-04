@@ -13,3 +13,5 @@ struct HomeBannerItemModel {
 
 
 typealias HomeBannerCellModel = [HomeBannerItemModel]
+
+

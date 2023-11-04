@@ -8,12 +8,17 @@
 import UIKit
 
 class BasketVC: BaseController {
+    //MARK: - Public
+    func configure(with productList: [HomeProductListItemModel]) {
+        self.productList = productList
+        tableView.reloadData()
+    }
+    
     //MARK: - Private Properties
+    private var productList: [HomeProductListItemModel] = []
     private let navBar = GeneralNavigationBar()
     private let deliveryView = DeliveryView()
     private let tableView = UITableView()
-    private var item: [HomeProductListItemModel] = []
-    private var productId = ProductDetailCell()
 }
 
 extension BasketVC {
@@ -42,24 +47,38 @@ extension BasketVC {
     
     override func configureAppearance() {
         super.configureAppearance()
+        tableView.register(BasketTableCell.self, forCellReuseIdentifier: String(describing: BasketTableCell.self))
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.allowsSelection = false
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.separatorColor = .clear
+        
         tabBarController?.tabBar.isHidden = true
         navBar.configure(with: "Your Cart")
         navBar.delegate = self
         navBar.rightBtnImage(isNotification: true)
-        
-        tableView.showsHorizontalScrollIndicator = false
-        tableView.register(BasketTableCell.self, forCellReuseIdentifier: String(describing: BasketTableCell.self))
-        tableView.dataSource = self
-        tableView.allowsSelection = false
-        
-        productId.delegate = self
     }
 }
 
-//MARK: - AddProductToBasketDelegate
-extension BasketVC: ProductDetailCellDelegate {
-    func didAddToCardWithProductId(with productId: Int) {
-        item.append(MocNetworkManager.shared.addProductWithId(with: productId))
+//MARK: - UITableViewDataSource
+extension BasketVC: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(productList.count)
+        return productList.count
+
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: BasketTableCell.self), for: indexPath) as! BasketTableCell
+        cell.configure(with: productList[indexPath.row])
+        return cell
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            productList.remove(at: indexPath.row)
+            MocNetworkManager.shared.deleteProductFromBasket(with: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
 }
 
@@ -75,14 +94,4 @@ extension BasketVC: GeneralNavigationBarDelegate {
     }
 }
 
-//MARK: - UITableViewDataSource
-extension BasketVC: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.item.count
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: BasketTableCell.self), for: indexPath) as! BasketTableCell
-        cell.configure(with: item[indexPath.row])
-        return cell
-    }
-}
+

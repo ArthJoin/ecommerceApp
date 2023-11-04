@@ -9,10 +9,13 @@ import UIKit
 
 class ProductDetailController: BaseController {
     //MARK: - Public
-    func configure(with model: HomeProductListItemModel) {
-        item.append(.productDetail(model))
-        item.append(.marketDetail(MocNetworkManager.shared.getMarketInfo(with: model.marketId)))
-        item.append(.productDiscription)
+    func configure(with productId: Int) {
+        let product = MocNetworkManager.shared.getProductById(with: productId)
+        self.productDetail = product
+        self.product.append(.productDetail(product))
+        self.product.append(.marketDetail(MocNetworkManager.shared.getMarketInfo(with: product.marketId)))
+        self.product.append(.productDiscription)
+        tableView.reloadData()
     }
     
     //MARK: - Life Cycle
@@ -27,9 +30,11 @@ class ProductDetailController: BaseController {
     
     //MARK: - Private properties
     private let tableView = UITableView()
-    private var item: [ProductDetailModel] = []
+    private var product: [ProductDetailModel] = []
+    private var productDetail: HomeProductListItemModel?
     private let navBar = GeneralNavigationBar()
     private let footer = FooterProductDetail()
+    private let basket = BasketVC()
 }
 
 //MARK: - GeneralNavigationBarDelegate
@@ -41,23 +46,32 @@ extension ProductDetailController: GeneralNavigationBarDelegate {
         }
     }
     func rightBtnAction() {
-        navigationController?.pushViewController(BasketVC(), animated: true)
+        let secondVC = BasketVC()
+        let productList = MocNetworkManager.shared.getBasketProductList()
+        secondVC.configure(with: productList)
+        navigationController?.pushViewController(secondVC, animated: true)
     }
 }
 
 //MARK: - Private Method
 private extension ProductDetailController {
     func setupTableView() {
+        //MARK: - NavigationBar  Setup
         view.addSubview(navBar)
         navBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.trailing.leading.equalToSuperview()
         }
+        
+        //MARK: - Footer Setup
+        guard let productDetail = productDetail else { return }
+        footer.configure(with: productDetail)
         view.addSubview(footer)
         footer.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
         }
         
+        //MARK: - TableView Setup
         tableView.dataSource = self
         tableView.register(ProductDetailCell.self, forCellReuseIdentifier: String(describing: ProductDetailCell.self))
         tableView.register(MarketDetailCell.self, forCellReuseIdentifier: String(describing: MarketDetailCell.self))
@@ -76,10 +90,10 @@ private extension ProductDetailController {
 
 extension ProductDetailController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        item.count
+        product.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = item[indexPath.row]
+        let item = product[indexPath.row]
         switch item {
         case .productDetail(let model):
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductDetailCell.self), for: indexPath) as! ProductDetailCell

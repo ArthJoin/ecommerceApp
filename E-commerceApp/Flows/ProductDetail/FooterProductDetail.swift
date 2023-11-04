@@ -6,26 +6,21 @@
 //
 
 import UIKit
-//MARK: - AddToCardDelegate
-protocol FooterProductDetailDelegate: AnyObject {
-    func didAddToCard()
-}
 
 final class FooterProductDetail: BaseView {
-    weak var delegate: FooterProductDetailDelegate?
+    //MARK: - Public
+    func configure(with product: HomeProductListItemModel) {
+        self.product = product
+        if product.isBasket {
+            addToCardBtnTappedState(with: addToCardBtn)
+        } else {
+            addToCardBtnNormalState(with: addToCardBtn)
+        }
+    }
     
     //MARK: - Private Properties
-    private let addToCardBtn: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Add to Cart", for: .normal)
-        btn.setTitleColor(.black, for: .normal)
-        btn.titleLabel?.font = Resources.Fonts.systemWeight(with: 15, weight: .medium)
-        btn.backgroundColor = Resources.Colors.transpulentGray
-        btn.layer.borderWidth = 1
-        btn.layer.borderColor = Resources.Colors.separator.cgColor
-        btn.layer.cornerRadius = 5
-        return btn
-    }()
+    private var product: HomeProductListItemModel?
+    private let addToCardBtn = UIButton()
     
     private let buyNowBtn: UIButton = {
         let btn = UIButton()
@@ -65,23 +60,37 @@ extension FooterProductDetail {
     override func configureAppearance() {
         super.configureAppearance()
         addToCardBtn.addTarget(self, action: #selector(addToCardActionhighlighted), for: .touchDown)
-        addToCardBtn.addTarget(self, action: #selector(addToCardActionUnhighlighted), for: [.touchUpInside, .touchDragExit, .touchUpOutside])
     }
 }
 
 extension FooterProductDetail {
     @objc func addToCardActionhighlighted() {
+        guard let product = product else { return }
+        MocNetworkManager.shared.postProductToBasket(with: product)
+        MocNetworkManager.shared.putProductListBasket(with: product.productId)
         UIView.animate(withDuration: 0.3) {
-            self.addToCardBtn.backgroundColor = Resources.Colors.active
-        }
-        DispatchQueue.main.async {
-            self.delegate?.didAddToCard()
+            self.addToCardBtnTappedState(with: self.addToCardBtn)
         }
     }
-
-    @objc func addToCardActionUnhighlighted() {
-        UIView.animate(withDuration: 0.3) {
-            self.addToCardBtn.backgroundColor = Resources.Colors.transpulentGray
+    
+    func addToCardBtnTappedState(with btn: UIButton) {
+        addToCardBtn.backgroundColor = Resources.Colors.active
+        if let sysImage = UIImage(systemName: "checkmark") {
+            let resizedImage = sysImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold))
+            resizedImage.withTintColor(.white)
+            btn.setTitle("", for: .normal)
+            btn.setImage(resizedImage, for: .normal)
+            btn.tintColor = .white
+            btn.isEnabled = false
         }
+    }
+    func addToCardBtnNormalState(with btn: UIButton) {
+        btn.setTitle("Add to Cart", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.titleLabel?.font = Resources.Fonts.systemWeight(with: 15, weight: .medium)
+        btn.backgroundColor = Resources.Colors.transpulentGray
+        btn.layer.borderWidth = 1
+        btn.layer.borderColor = Resources.Colors.separator.cgColor
+        btn.layer.cornerRadius = 5
     }
 }
