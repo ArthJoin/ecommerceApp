@@ -65,7 +65,7 @@ private extension ProductDetailController {
         
         //MARK: - Footer Setup
         guard let productDetail = productDetail else { return }
-        footer.configure(with: productDetail)
+        footer.configure(with: productDetail.productId)
         view.addSubview(footer)
         footer.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
@@ -88,6 +88,15 @@ private extension ProductDetailController {
     }
 }
 
+extension ProductDetailController {
+    override func fetchData() {
+        super.fetchData()
+        guard let productDetail = productDetail else { return }
+        footer.configure(with: productDetail.productId)
+    }
+}
+
+//MARK: - UITableViewDataSource
 extension ProductDetailController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         product.count
@@ -97,7 +106,7 @@ extension ProductDetailController: UITableViewDataSource {
         switch item {
         case .productDetail(let model):
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductDetailCell.self), for: indexPath) as! ProductDetailCell
-            cell.configure(wiht: model)
+            cell.configure(with: model.productId)
             return cell
         case .marketDetail(let market):
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MarketDetailCell.self), for: indexPath) as! MarketDetailCell

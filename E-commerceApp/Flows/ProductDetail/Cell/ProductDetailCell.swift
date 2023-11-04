@@ -9,12 +9,13 @@ import UIKit
 
 final class ProductDetailCell: UITableViewCell {
     //MARK: - Public
-    func configure(wiht item: HomeProductListItemModel) {
-        self.item = item
-        productImage.image = item.image
-        itemName.text = item.title
-        itemPrice.text = item.subTitle
-        isWishlist = item.isWishlist
+    func configure(with id: Int) {
+        self.isWishlist(with: id)
+        let productById = MocNetworkManager.shared.getProductById(with: id)
+        self.item = productById
+        productImage.image = productById.image
+        itemName.text = productById.title
+        itemPrice.text = productById.subTitle
     }
     
     //MARK: - Init
@@ -48,15 +49,8 @@ final class ProductDetailCell: UITableViewCell {
         label.font = Resources.Fonts.systemWeight(with: 20, weight: .medium)
         return label
     }()
-    
-    private var isWishlist: Bool?
     private let wishlistBtn: UIButton = {
         let btn = UIButton()
-        btn.tintColor = Resources.Colors.inactive
-        if let systemImage = UIImage(systemName: "heart") {
-            let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
-            btn.setImage(resizedImage, for: .normal)
-        }
         return btn
     }()
 }
@@ -86,29 +80,45 @@ private extension ProductDetailCell {
             make.trailing.equalToSuperview().inset(20)
         }
         
-        wishlistBtn.addTarget(self, action: #selector(wishlistBtnAction), for: .touchUpInside)        
+        wishlistBtn.addTarget(self, action: #selector(wishlistBtnAction), for: .touchUpInside)
     }
     
     @objc func wishlistBtnAction() {
+        NotificationCenter.default.post(name: Notification.Name("WishlistUpdate"), object: nil)
+        guard let item = self.item else { return }
         if wishlistBtn.isSelected {
+            MocNetworkManager.shared.putProductListAddWishlist(with: item.productId)
+            MocNetworkManager.shared.postProductToWishlist(with: item)
             UIView.animate(withDuration: 0.3) {
-                if let systemImage = UIImage(systemName: "heart") {
-                    let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
-                    self.wishlistBtn.setImage(resizedImage, for: .normal)
-                }
-                self.wishlistBtn.tintColor = Resources.Colors.inactive
+                self.isWishlist(with: item.productId)
             }
         } else {
+            MocNetworkManager.shared.putProductListRemoveWishlist(with: item.productId)
+            MocNetworkManager.shared.deleteProductFromWishlist(with: item.productId)
             UIView.animate(withDuration: 0.2) {
-                if let systemImage = UIImage(systemName: "heart.fill") {
-                    let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
-                    self.wishlistBtn.setImage(resizedImage, for: .normal)
-                }
-                self.wishlistBtn.tintColor = .red
+                self.isWishlist(with: item.productId)
             }
         }
         
         wishlistBtn.isSelected = !wishlistBtn.isSelected
+    }
+    
+    func isWishlist(with productId: Int) {
+        let product = MocNetworkManager.shared.getProductById(with: productId)
+        if product.isWishlist {
+            wishlistBtn.tintColor = .red
+            if let systemImage = UIImage(systemName: "heart.fill") {
+                let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
+                wishlistBtn.setImage(resizedImage, for: .normal)
+            }
+
+        } else {
+            wishlistBtn.tintColor = Resources.Colors.inactive
+            if let systemImage = UIImage(systemName: "heart") {
+                let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
+                wishlistBtn.setImage(resizedImage, for: .normal)
+            }
+        }
     }
 }
 

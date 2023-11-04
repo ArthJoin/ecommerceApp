@@ -9,7 +9,7 @@ import UIKit
 
 class WishlistController: BaseController {
     //MARK: - Private Properties
-    private var item: [HomeProductListItemModel] = []
+    private var item = MocNetworkManager.shared.getWishlistProductList()
     private let navBar = GeneralNavigationBar()
     private let tableView = UITableView()
 }
@@ -35,6 +35,8 @@ extension WishlistController {
     
     override func configureAppearance() {
         super.configureAppearance()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: Notification.Name("WishlistUpdate"), object: nil)
+        
         navigationController?.navigationBar.isHidden = true
         navBar.configure(with: "Wishlist")
         navBar.backBtn(isHidden: true)
@@ -43,6 +45,10 @@ extension WishlistController {
         tableView.showsVerticalScrollIndicator = false
         tableView.dataSource = self
         tableView.register(WishlistTableCell.self, forCellReuseIdentifier: String(describing: WishlistTableCell.self))
+    }
+    @objc func updateData() {
+        item = MocNetworkManager.shared.getWishlistProductList()
+        tableView.reloadData()
     }
 }
 

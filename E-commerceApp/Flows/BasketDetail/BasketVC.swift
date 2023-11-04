@@ -64,7 +64,6 @@ extension BasketVC {
 //MARK: - UITableViewDataSource
 extension BasketVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(productList.count)
         return productList.count
 
     }
@@ -75,6 +74,7 @@ extension BasketVC: UITableViewDataSource, UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            MocNetworkManager.shared.putProductListRemoveBasket(with: productList[indexPath.row].productId)
             productList.remove(at: indexPath.row)
             MocNetworkManager.shared.deleteProductFromBasket(with: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)

@@ -14,6 +14,11 @@ enum NavBarPosition {
 
 class BaseController: UIViewController {
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -28,6 +33,7 @@ class BaseController: UIViewController {
     func configureAppearance() {
         view.backgroundColor = Resources.Colors.background
     }
+    func fetchData() {}
     
     func navBarLeftButtonHandler() {
         print("NavBar left button tapped")

@@ -61,25 +61,56 @@ class MocNetworkManager {
         return basketProductList
     }
     
+    func getWishlistProductList() -> [HomeProductListItemModel] {
+        return wishlistProductList
+    }
+    
     //MARK: - Post Methods
     func postProductToBasket(with product: HomeProductListItemModel) {
         self.basketProductList.append(product)
     }
     
+    func postProductToWishlist(with product: HomeProductListItemModel) {
+        self.wishlistProductList.append(product)
+    }
+    
     //MARK: - Delete Methods
+    
     func deleteProductFromBasket(with index: Int) {
         basketProductList.remove(at: index)
     }
+    
+    func deleteProductFromWishlist(with productId: Int) {
+        if let index = wishlistProductList.firstIndex(where: { $0.productId == productId }) {
+            wishlistProductList.remove(at: index)
+        }
+    }
+    
     //MARK: - Put Methods
-    func putProductListBasket(with productId: Int) {
+    func putProductListAddBasket(with productId: Int) {
         if let index = productList.firstIndex(where: { $0.productId == productId }) {
             productList[index].isBasket = true
+        }
+    }
+    func putProductListRemoveBasket(with productId: Int) {
+        if let index = productList.firstIndex(where: { $0.productId == productId }) {
+            productList[index].isBasket = false
+        }
+    }
+    func putProductListAddWishlist(with productId: Int) {
+        if let index = productList.firstIndex(where: { $0.productId == productId }) {
+            productList[index].isWishlist = true
+        }
+    }
+    func putProductListRemoveWishlist(with productId: Int) {
+        if let index = productList.firstIndex(where: { $0.productId == productId }) {
+            productList[index].isWishlist = false
         }
     }
     
     //MARK: - My Arrays
     private var productList: HomeProductListCellModel = [
-        .init(marketId: 0, productId: 983, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle, isWishlist: true, isBasket: false),
+        .init(marketId: 0, productId: 983, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle, isWishlist: false, isBasket: false),
         .init(marketId: 1, productId: 213, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle, isWishlist: false, isBasket: false),
         .init(marketId: 0, productId: 743, image: DummyData.products.one!, title: DummyData.products.title, subTitle: DummyData.products.subTitle, isWishlist: false, isBasket: false),
         .init(marketId: 1, productId: 891, image: DummyData.products.second!, title: DummyData.products.title, subTitle: DummyData.products.subTitle, isWishlist: false, isBasket: false),
@@ -91,6 +122,8 @@ class MocNetworkManager {
     
     private var HomeProductIdList: [Int] = []
     private var basketProductList: [HomeProductListItemModel] = []
+    private var wishlistProductList: [HomeProductListItemModel] = []
+
     
     private var MarketInfo: [MarketInfoModel] = [
         .init(id: 0, image: DummyData.market.logo.market1!, marketName: "Shopify Market", marketLastOnline: "12 hour ago"),
