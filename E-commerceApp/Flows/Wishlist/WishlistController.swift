@@ -35,8 +35,6 @@ extension WishlistController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: Notification.Name("WishlistUpdate"), object: nil)
-        
         navigationController?.navigationBar.isHidden = true
         navBar.configure(with: "Wishlist")
         navBar.backBtn(isHidden: true)
@@ -46,7 +44,9 @@ extension WishlistController {
         tableView.dataSource = self
         tableView.register(WishlistTableCell.self, forCellReuseIdentifier: String(describing: WishlistTableCell.self))
     }
-    @objc func updateData() {
+    
+    override func fetchData() {
+        super.fetchData()
         item = MocNetworkManager.shared.getWishlistProductList()
         tableView.reloadData()
     }

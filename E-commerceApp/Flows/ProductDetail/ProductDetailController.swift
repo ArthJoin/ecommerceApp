@@ -88,6 +88,7 @@ private extension ProductDetailController {
     }
 }
 
+//MARK: - viewWillAppear fetchData
 extension ProductDetailController {
     override func fetchData() {
         super.fetchData()

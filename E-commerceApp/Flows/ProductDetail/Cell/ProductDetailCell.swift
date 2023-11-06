@@ -49,10 +49,7 @@ final class ProductDetailCell: UITableViewCell {
         label.font = Resources.Fonts.systemWeight(with: 20, weight: .medium)
         return label
     }()
-    private let wishlistBtn: UIButton = {
-        let btn = UIButton()
-        return btn
-    }()
+    private let wishlistBtn = UIButton()
 }
 
 //MARK: - Private Method
@@ -80,44 +77,33 @@ private extension ProductDetailCell {
             make.trailing.equalToSuperview().inset(20)
         }
         
-        wishlistBtn.addTarget(self, action: #selector(wishlistBtnAction), for: .touchUpInside)
+        wishlistBtn.addTarget(self, action: #selector(wishlistBtnAction), for: .touchDown)
     }
     
     @objc func wishlistBtnAction() {
-        NotificationCenter.default.post(name: Notification.Name("WishlistUpdate"), object: nil)
         guard let item = self.item else { return }
-        if wishlistBtn.isSelected {
+        let product = MocNetworkManager.shared.getProductById(with: item.productId)
+        if product.isWishlist {
+            MocNetworkManager.shared.putProductListRemoveWishlist(with: item.productId)
+            MocNetworkManager.shared.deleteProductFromWishlist(with: item.productId)
+            UIView.animate(withDuration: 0.3) {
+                Resources.Images.buttons.wishlistInactive(with: self.wishlistBtn)
+            }
+        } else {
             MocNetworkManager.shared.putProductListAddWishlist(with: item.productId)
             MocNetworkManager.shared.postProductToWishlist(with: item)
             UIView.animate(withDuration: 0.3) {
-                self.isWishlist(with: item.productId)
-            }
-        } else {
-            MocNetworkManager.shared.putProductListRemoveWishlist(with: item.productId)
-            MocNetworkManager.shared.deleteProductFromWishlist(with: item.productId)
-            UIView.animate(withDuration: 0.2) {
-                self.isWishlist(with: item.productId)
+                Resources.Images.buttons.wishlistActive(with: self.wishlistBtn)
             }
         }
-        
-        wishlistBtn.isSelected = !wishlistBtn.isSelected
     }
     
     func isWishlist(with productId: Int) {
         let product = MocNetworkManager.shared.getProductById(with: productId)
         if product.isWishlist {
-            wishlistBtn.tintColor = .red
-            if let systemImage = UIImage(systemName: "heart.fill") {
-                let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
-                wishlistBtn.setImage(resizedImage, for: .normal)
-            }
-
+            Resources.Images.buttons.wishlistActive(with: wishlistBtn)
         } else {
-            wishlistBtn.tintColor = Resources.Colors.inactive
-            if let systemImage = UIImage(systemName: "heart") {
-                let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
-                wishlistBtn.setImage(resizedImage, for: .normal)
-            }
+            Resources.Images.buttons.wishlistInactive(with: wishlistBtn)
         }
     }
 }

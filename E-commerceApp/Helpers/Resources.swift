@@ -71,6 +71,23 @@ enum Resources {
             static var basket = UIImage(named: "basket_icon")
             static var search = UIImage(named: "Search")
         }
+        
+        enum buttons {
+            static func wishlistInactive(with btn: UIButton) {
+                btn.tintColor = Resources.Colors.inactive
+                if let systemImage = UIImage(systemName: "heart") {
+                    let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
+                    btn.setImage(resizedImage, for: .normal)
+                }
+            }
+            static func wishlistActive(with btn: UIButton) {
+                btn.tintColor = .red
+                if let systemImage = UIImage(systemName: "heart.fill") {
+                    let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular))
+                    btn.setImage(resizedImage, for: .normal)
+                }
+            }
+        }
     }
     
     enum Fonts {
