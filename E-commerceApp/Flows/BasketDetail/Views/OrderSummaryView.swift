@@ -102,7 +102,7 @@ extension OrderSummaryView {
     override func configureAppearance() {
         super.configureAppearance()
         backgroundColor = .white
-        addSeparator(is: true)
+        addSeparator(is: false)
         makeSystem(paymentMethodBtn)
         paymentMethodBtn.addTarget(self, action: #selector(paymentMethodAction), for: .touchUpInside)
     }

@@ -28,6 +28,7 @@ class PaymentVC: BaseController {
     private let generalNavigationBar = GeneralNavigationBar()
     private let tableView = UITableView()
     private var footer = OrderSummaryView()
+//    private let transition 
 }
 
 //MARK: - Lifecycle methods
@@ -111,6 +112,8 @@ extension PaymentVC: UITableViewDataSource, UITableViewDelegate {
             print("productList")
         case .deliveryType:
             let secondVC = ChooseDelivery()
+            secondVC.modalPresentationStyle = .custom
+            secondVC.transitioningDelegate = transition
             self.present(secondVC, animated: true)
         case .paymentMethod:
             print("keep working")
