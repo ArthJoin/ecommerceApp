@@ -59,6 +59,8 @@ extension ChooseDelivery {
     
     override func configureAppearance() {
         super.configureAppearance()
+        view.layer.cornerRadius = 24
+        
         stack.axis = .horizontal
         stack.addArrangedSubview(header)
         stack.addArrangedSubview(closeBtn)

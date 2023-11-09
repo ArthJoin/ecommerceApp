@@ -28,7 +28,7 @@ class PaymentVC: BaseController {
     private let generalNavigationBar = GeneralNavigationBar()
     private let tableView = UITableView()
     private var footer = OrderSummaryView()
-//    private let transition 
+    private let transition = PanelTransition()
 }
 
 //MARK: - Lifecycle methods
