@@ -11,11 +11,11 @@ class ProductItemCell: UICollectionViewCell {
     var buttonAction: ((Int) -> Void)?
     
     //MARK: - Public
-    func configure(with product: HomeProductListItemModel){
+    func configure(with product: ProductListItemModel){
         item = product
         image.image = product.image
         title.text = product.title
-        subTitle.text = product.subTitle
+        subTitle.text = "$\(product.subTitle)"
     }
     
     //MARK: - init
@@ -35,14 +35,14 @@ class ProductItemCell: UICollectionViewCell {
         static let insertOffset: CGFloat = 13
         static let viewCornerRadius: CGFloat = 7
         static let titleFontSize: CGFloat = 12
-        static let subTitleFontSize: CGFloat = 17
+        static let subTitleFontSize: CGFloat = 16
         static let btnCornerRadius: CGFloat = 10
         static let viewHeight: CGFloat = 217
         static let viewWidth: CGFloat = 170
     }
     
     //MARK: Private Properties
-    private var item: HomeProductListItemModel!
+    private var item: ProductListItemModel!
     
     private let view: UIView = {
         let view = UIView()

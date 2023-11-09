@@ -8,11 +8,18 @@
 import UIKit
 
 final class BasketTableCell: UITableViewCell {
+    //MARK: - CallBack
+    var changePrice: (() -> Void)?
+    
     //MARK: - Public
-    func configure(with product: HomeProductListItemModel) {
+    func configure(with product: ProductListItemModel) {
+        self.product = product
         productImage.image = product.image
         productName.text = product.title
-        productPrice.text = product.subTitle
+        productPrice.text = "$\(product.subTitle)"
+        doublePrice = product.subTitle
+        MocNetworkManager.shared.addBasketPrice(with: doublePrice)
+        MocNetworkManager.shared.postPaymentProductList(with: product)
     }
     
     //MARK: - Init
@@ -27,13 +34,15 @@ final class BasketTableCell: UITableViewCell {
     
     
     //MARK: - Private Properties
+    private var product: ProductListItemModel?
+    
     private let chekbox: UIButton = {
         let btn = UIButton()
-        if let systemImage = UIImage(systemName: "app") {
+        if let systemImage = UIImage(systemName: "checkmark.square.fill") {
             let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .regular))
             btn.setImage(resizedImage, for: .normal)
         }
-        btn.tintColor = Resources.Colors.secondary
+        btn.tintColor = Resources.Colors.active
         return btn
     }()
     
@@ -48,6 +57,8 @@ final class BasketTableCell: UITableViewCell {
         label.font = Resources.Fonts.systemWeight(with: 12, weight: .medium)
         return label
     }()
+    
+    private var doublePrice: Double = 0.0
     
     private let productPrice: UILabel = {
         let label = UILabel()
@@ -81,23 +92,16 @@ extension BasketTableCell {
             make.leading.equalTo(productImage.snp.trailing).offset(10)
             make.centerY.equalTo(productImage)
         }
-
         chekbox.addTarget(self, action: #selector(chekboxTapped), for: .touchUpInside)
-        
     }
 }
 
 extension BasketTableCell {
     @objc func chekboxTapped() {
         if chekbox.isSelected {
-            UIView.animate(withDuration: 0.2) {
-                if let sysImage = UIImage(systemName: "app") {
-                    let resizedImage = sysImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .regular))
-                    self.chekbox.setImage(resizedImage, for: .normal)
-                }
-                self.chekbox.tintColor = Resources.Colors.secondary
-            }
-        } else {
+            MocNetworkManager.shared.addBasketPrice(with: doublePrice)
+            guard let product = product else { return }
+            MocNetworkManager.shared.postPaymentProductList(with: product)
             UIView.animate(withDuration: 0.3) {
                 if let sysImage = UIImage(systemName: "checkmark.square.fill") {
                     let resizedImage = sysImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .regular))
@@ -105,7 +109,19 @@ extension BasketTableCell {
                 }
                 self.chekbox.tintColor = Resources.Colors.active
             }
+        } else {
+            MocNetworkManager.shared.removeBasketPrice(with: doublePrice)
+            guard let product = product else { return }
+            MocNetworkManager.shared.deletePaymentProductList(with: product.productId)
+            UIView.animate(withDuration: 0.2) {
+                if let sysImage = UIImage(systemName: "app") {
+                    let resizedImage = sysImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .regular))
+                    self.chekbox.setImage(resizedImage, for: .normal)
+                }
+                self.chekbox.tintColor = Resources.Colors.secondary
+            }
         }
         chekbox.isSelected = !chekbox.isSelected
+        changePrice!()
     }
 }

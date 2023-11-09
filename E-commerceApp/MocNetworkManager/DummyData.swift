@@ -27,7 +27,7 @@ enum DummyData {
         static var one = UIImage(named: "img")
         static var second = UIImage(named: "img-2")
         static var title = "Monitor LG 22”inc 4K 120Fps"
-        static var subTitle = "$199.99"
+        static var subTitle = 199.99
     }
     
     enum market {

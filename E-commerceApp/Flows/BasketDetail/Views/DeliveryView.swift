@@ -46,22 +46,4 @@ extension DeliveryView {
         super.configureAppearance()
         deliveryAddressBtn.setTitle("Almaty Al-farabi 15 k4v 412")
     }
-    
-    func addSeparator(is bottom: Bool) {
-        let separator = UIView()
-        separator.backgroundColor = Resources.Colors.transpulentGray
-        self.addSubview(separator)
-        
-        if bottom {
-            separator.snp.makeConstraints { make in
-                make.trailing.leading.bottom.equalToSuperview()
-                make.height.equalTo(1)
-            }
-        } else {
-            separator.snp.makeConstraints { make in
-                make.trailing.leading.top.equalToSuperview()
-                make.height.equalTo(1)
-            }
-        }
-    }
 }

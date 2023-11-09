@@ -36,4 +36,21 @@ extension UIView {
         addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
     }
+    func addSeparator(is bool: Bool) {
+        let separator = UIView()
+        separator.backgroundColor = Resources.Colors.transpulentGray
+        self.addSubview(separator)
+        
+        if bool {
+            separator.snp.makeConstraints { make in
+                make.trailing.leading.bottom.equalToSuperview()
+                make.height.equalTo(1)
+            }
+        } else {
+            separator.snp.makeConstraints { make in
+                make.trailing.leading.top.equalToSuperview()
+                make.height.equalTo(1)
+            }
+        }
+    }
 }

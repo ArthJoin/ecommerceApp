@@ -12,10 +12,10 @@ final class ProductDetailCell: UITableViewCell {
     func configure(with id: Int) {
         self.isWishlist(with: id)
         let productById = MocNetworkManager.shared.getProductById(with: id)
-        self.item = productById
+        self.product = productById
         productImage.image = productById.image
-        itemName.text = productById.title
-        itemPrice.text = productById.subTitle
+        productName.text = productById.title
+        productPrice.text = "$\(productById.subTitle)"
     }
     
     //MARK: - Init
@@ -28,25 +28,36 @@ final class ProductDetailCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Private UIConstants
+    private enum UIConstant {
+        static let productNameFontSize: CGFloat = 15
+        static let productPriceFontSize: CGFloat = 20
+        static let productImageHeight: CGFloat = 250
+        static let stackVerticalSpacing: CGFloat = 5
+        static let offset: CGFloat = 15
+        static let wishlistTrailingInset: CGFloat = 15
+        static let animationDuration: CGFloat = 0.3
+    }
+    
     //MARK: - Private Properties
     private let footerDelegate = FooterProductDetail()
     private var footerBtnTapped = FooterProductDetail()
-    private var item: HomeProductListItemModel?
+    private var product: ProductListItemModel?
     private let productImage: UIImageView = {
         let image = UIImageView()
         image.image = DummyData.products.one
         return image
     }()
-    private let itemName: UILabel = {
+    private let productName: UILabel = {
         let label = UILabel()
         label.textColor = Resources.Colors.titleMain
-        label.font = Resources.Fonts.helveticaRegular(with: 15)
+        label.font = Resources.Fonts.helveticaRegular(with: UIConstant.productNameFontSize)
         return label
     }()
-    private let itemPrice: UILabel = {
+    private let productPrice: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = Resources.Fonts.systemWeight(with: 20, weight: .medium)
+        label.font = Resources.Fonts.systemWeight(with: UIConstant.productPriceFontSize, weight: .medium)
         return label
     }()
     private let wishlistBtn = UIButton()
@@ -58,41 +69,42 @@ private extension ProductDetailCell {
         contentView.addSubview(productImage)
         productImage.snp.makeConstraints { make in
             make.trailing.leading.top.equalToSuperview()
-            make.height.equalTo(250)
+            make.height.equalTo(UIConstant.productImageHeight)
         }
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.addArrangedSubview(itemName)
-        stack.addArrangedSubview(itemPrice)
+        stack.addArrangedSubview(productName)
+        stack.addArrangedSubview(productPrice)
+        stack.spacing = UIConstant.stackVerticalSpacing
         contentView.addSubview(stack)
         stack.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(15)
+            make.leading.equalToSuperview().inset(UIConstant.offset)
             make.trailing.equalToSuperview()
-            make.top.equalTo(productImage.snp.bottom).offset(15)
-            make.bottom.equalToSuperview().inset(10)
+            make.top.equalTo(productImage.snp.bottom).offset(UIConstant.offset)
+            make.bottom.equalToSuperview().inset(UIConstant.offset)
         }
         contentView.addSubview(wishlistBtn)
         wishlistBtn.snp.makeConstraints { make in
             make.centerY.equalTo(stack)
-            make.trailing.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview().inset(UIConstant.wishlistTrailingInset)
         }
         
         wishlistBtn.addTarget(self, action: #selector(wishlistBtnAction), for: .touchDown)
     }
     
     @objc func wishlistBtnAction() {
-        guard let item = self.item else { return }
+        guard let item = self.product else { return }
         let product = MocNetworkManager.shared.getProductById(with: item.productId)
         if product.isWishlist {
             MocNetworkManager.shared.putProductListRemoveWishlist(with: item.productId)
             MocNetworkManager.shared.deleteProductFromWishlist(with: item.productId)
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: UIConstant.animationDuration) {
                 Resources.Images.buttons.wishlistInactive(with: self.wishlistBtn)
             }
         } else {
             MocNetworkManager.shared.putProductListAddWishlist(with: item.productId)
             MocNetworkManager.shared.postProductToWishlist(with: item)
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: UIConstant.animationDuration) {
                 Resources.Images.buttons.wishlistActive(with: self.wishlistBtn)
             }
         }

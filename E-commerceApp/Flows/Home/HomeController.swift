@@ -38,16 +38,17 @@ extension HomeController {
     
     override func configureAppearance() {
         super.configureAppearance()
+        //NavigationBar
         navigationController?.navigationBar.isHidden = true
+        navBar.delegate = self
+        
+        //TableView
         tableView.dataSource = self
         tableView.register(HomeBannerCell.self, forCellReuseIdentifier: String(describing: HomeBannerCell.self))
         tableView.register(HomeCategoryCell.self, forCellReuseIdentifier: String(describing: HomeCategoryCell.self))
         tableView.register(HomeProductListCell.self, forCellReuseIdentifier: String(describing: HomeProductListCell.self))
         tableView.separatorColor = .clear
         tableView.showsVerticalScrollIndicator = false
-        
-        //MARK: - Delegate
-        navBar.delegate = self
     }
 }
 
@@ -79,9 +80,9 @@ extension HomeController: UITableViewDataSource {
 //MARK: - HomeProductListCellDelegate
 extension HomeController: HomeProductListCellDelegate {
     func didSelectItem(with id: Int) {
-        let secondViewController = ProductDetailController()
-        secondViewController.configure(with: id)
-        navigationController?.pushViewController(secondViewController, animated: true)
+        let secondVC = ProductDetailController()
+        secondVC.configure(with: id)
+        navigationController?.pushViewController(secondVC, animated: true)
     }
 }
 

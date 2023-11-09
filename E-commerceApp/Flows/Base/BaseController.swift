@@ -36,7 +36,6 @@ class BaseController: UIViewController {
     func fetchData() {}
     
     func navBarLeftButtonHandler() {
-        print("NavBar left button tapped")
     }
     func navBarRightButtonHandler() {
         print("NavBar right button tapped")

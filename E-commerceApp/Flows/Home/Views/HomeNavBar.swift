@@ -81,6 +81,8 @@ extension HomeNavBar {
            make.bottom.equalToSuperview().inset(10)
            make.height.equalTo(45)
        }
+       makeSystem(basketButton)
+       makeSystem(notificationButton)
        basketButton.addTarget(self, action: #selector(basketButtonAction), for: .touchUpInside)
     }
 }

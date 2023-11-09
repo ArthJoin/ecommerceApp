@@ -7,14 +7,14 @@
 
 import UIKit
 
-struct HomeProductListItemModel {
+struct ProductListItemModel {
     let marketId: Int
     let productId: Int
     let image: UIImage
     let title: String
-    let subTitle: String
+    let subTitle: Double
     var isWishlist: Bool
     var isBasket: Bool
 }
 
-typealias HomeProductListCellModel = [HomeProductListItemModel]
+typealias HomeProductListCellModel = [ProductListItemModel]

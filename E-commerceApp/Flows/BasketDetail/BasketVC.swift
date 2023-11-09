@@ -9,16 +9,17 @@ import UIKit
 
 class BasketVC: BaseController {
     //MARK: - Public
-    func configure(with productList: [HomeProductListItemModel]) {
+    func configure(with productList: [ProductListItemModel]) {
         self.productList = productList
         tableView.reloadData()
     }
     
     //MARK: - Private Properties
-    private var productList: [HomeProductListItemModel] = []
+    private var productList: [ProductListItemModel] = []
     private let navBar = GeneralNavigationBar()
     private let deliveryView = DeliveryView()
     private let tableView = UITableView()
+    private let footer = OrderSummaryView()
 }
 
 extension BasketVC {
@@ -27,6 +28,7 @@ extension BasketVC {
         view.addSubview(navBar)
         view.addSubview(deliveryView)
         view.addSubview(tableView)
+        view.addSubview(footer)
     }
     
     override func constaintViews() {
@@ -41,7 +43,12 @@ extension BasketVC {
         }
         tableView.snp.makeConstraints { make in
             make.top.equalTo(deliveryView.snp.bottom)
-            make.trailing.leading.bottom.equalToSuperview()
+            make.trailing.leading.equalToSuperview()
+        }
+        footer.snp.makeConstraints { make in
+            make.top.equalTo(tableView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
     
@@ -50,7 +57,7 @@ extension BasketVC {
         tableView.register(BasketTableCell.self, forCellReuseIdentifier: String(describing: BasketTableCell.self))
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.allowsSelection = false
+        
         tableView.showsHorizontalScrollIndicator = false
         tableView.separatorColor = .clear
         
@@ -58,6 +65,8 @@ extension BasketVC {
         navBar.configure(with: "Your Cart")
         navBar.delegate = self
         navBar.rightBtnImage(isNotification: true)
+        
+        footer.delegate = self
     }
 }
 
@@ -70,15 +79,29 @@ extension BasketVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: BasketTableCell.self), for: indexPath) as! BasketTableCell
         cell.configure(with: productList[indexPath.row])
+        cell.changePrice = {
+            self.footer.configure()
+        }
+        footer.configure()
+        let view = UIView()
+        view.backgroundColor = .clear
+        cell.selectedBackgroundView = view
         return cell
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            MocNetworkManager.shared.removeBasketPrice(with: productList[indexPath.row].subTitle)
+            footer.configure()
             MocNetworkManager.shared.putProductListRemoveBasket(with: productList[indexPath.row].productId)
             productList.remove(at: indexPath.row)
             MocNetworkManager.shared.deleteProductFromBasket(with: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let secondVC = ProductDetailController()
+        secondVC.configure(with: productList[indexPath.row].productId)
+        navigationController?.pushViewController(secondVC, animated: true)
     }
 }
 
@@ -87,6 +110,7 @@ extension BasketVC: GeneralNavigationBarDelegate {
     func rightBtnAction() {
     }
     func didBackBtnActionEnableTabBar() {
+        MocNetworkManager.shared.selectedBasketPrice = 0
         navigationController?.popViewController(animated: true)
         if navigationController?.viewControllers.count == 1 {
             tabBarController?.tabBar.isHidden = false
@@ -94,4 +118,12 @@ extension BasketVC: GeneralNavigationBarDelegate {
     }
 }
 
+//MARK: - PaymentMethodBtn Delegate
+extension BasketVC: OrderSummaryViewDelegate {
+    func didPaymentMethodBtnTapped() {
+        let secondVC = PaymentVC()
+        secondVC.configure()
+        navigationController?.pushViewController(secondVC, animated: true)
+    }
+}
 

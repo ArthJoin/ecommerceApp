@@ -16,7 +16,7 @@ final class FooterProductDetail: BaseView {
     }
     
     //MARK: - Private Properties
-    private var product: HomeProductListItemModel?
+    private var product: ProductListItemModel?
     private let addToCardBtn = UIButton()
     
     private let buyNowBtn: UIButton = {
@@ -25,7 +25,7 @@ final class FooterProductDetail: BaseView {
         btn.setTitleColor(.black, for: .normal)
         btn.titleLabel?.font = Resources.Fonts.systemWeight(with: 15, weight: .medium)
         btn.backgroundColor = Resources.Colors.transpulentGray
-        btn.layer.borderWidth = 1
+        btn.layer.borderWidth = 0.5
         btn.layer.borderColor = Resources.Colors.separator.cgColor
         btn.layer.cornerRadius = 5
         return btn
@@ -42,7 +42,7 @@ extension FooterProductDetail {
         super.constaintViews()
         addToCardBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
-            make.top.equalToSuperview().inset(10)
+            make.top.equalToSuperview().inset(15)
             make.bottom.equalToSuperview().inset(70)
             make.height.equalTo(50)
             make.width.equalTo(170)
@@ -57,6 +57,7 @@ extension FooterProductDetail {
     override func configureAppearance() {
         super.configureAppearance()
         addToCardBtn.addTarget(self, action: #selector(addToCardActionhighlighted), for: .touchUpInside)
+        addSeparator(is: false)
     }
 }
 
@@ -80,7 +81,7 @@ extension FooterProductDetail {
                 addToCardBtn.setTitle("", for: .normal)
                 addToCardBtn.setImage(resizedImage, for: .normal)
                 addToCardBtn.tintColor = .white
-                addToCardBtn.layer.borderWidth = 1
+                addToCardBtn.layer.borderWidth = 0.5
                 addToCardBtn.layer.borderColor = Resources.Colors.separator.cgColor
                 addToCardBtn.layer.cornerRadius = 5
                 addToCardBtn.isEnabled = false
@@ -92,7 +93,7 @@ extension FooterProductDetail {
             addToCardBtn.setTitleColor(.black, for: .normal)
             addToCardBtn.titleLabel?.font = Resources.Fonts.systemWeight(with: 15, weight: .medium)
             addToCardBtn.backgroundColor = Resources.Colors.transpulentGray
-            addToCardBtn.layer.borderWidth = 1
+            addToCardBtn.layer.borderWidth = 0.5
             addToCardBtn.layer.borderColor = Resources.Colors.separator.cgColor
             addToCardBtn.layer.cornerRadius = 5
         }

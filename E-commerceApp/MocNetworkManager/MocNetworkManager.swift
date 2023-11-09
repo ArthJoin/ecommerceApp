@@ -46,43 +46,68 @@ class MocNetworkManager {
         return MarketInfoModel(id: 404, image: UIImage(), marketName: "", marketLastOnline: "")
     }
     
-    func getProductList() -> [HomeProductListItemModel] {
+    func getProductList() -> [ProductListItemModel] {
         return productList
     }
     
-    func getProductById(with productId: Int) -> HomeProductListItemModel {
+    func getProductById(with productId: Int) -> ProductListItemModel {
         if let index = productList.firstIndex(where: { $0.productId == productId }) {
             return productList[index]
         }
-        return HomeProductListItemModel(marketId: 000, productId: 000, image: UIImage(), title: "", subTitle: "", isWishlist: false, isBasket: false)
+        return ProductListItemModel(marketId: 000, productId: 000, image: UIImage(), title: "", subTitle: 0, isWishlist: false, isBasket: false)
     }
     
-    func getBasketProductList() -> [HomeProductListItemModel] {
+    func getBasketProductList() -> [ProductListItemModel] {
         return basketProductList
     }
     
-    func getWishlistProductList() -> [HomeProductListItemModel] {
+    func getWishlistProductList() -> [ProductListItemModel] {
         return wishlistProductList
     }
     
+    func getBasketSelectedItemsPrice() -> Double {
+        return selectedBasketPrice
+    }
+    
+    func getPaymentProductList() -> [ProductListItemModel] {
+        return paymentProductList
+    }
+    
     //MARK: - Post Methods
-    func postProductToBasket(with product: HomeProductListItemModel) {
+    func postProductToBasket(with product: ProductListItemModel) {
         self.basketProductList.append(product)
     }
     
-    func postProductToWishlist(with product: HomeProductListItemModel) {
+    func addBasketPrice(with price: Double) {
+        self.selectedBasketPrice += price
+    }
+
+    func postPaymentProductList(with product: ProductListItemModel) {
+        self.paymentProductList.append(product)
+    }
+    
+    func postProductToWishlist(with product: ProductListItemModel) {
         self.wishlistProductList.append(product)
     }
     
     //MARK: - Delete Methods
-    
     func deleteProductFromBasket(with index: Int) {
         basketProductList.remove(at: index)
+    }
+    
+    func removeBasketPrice(with price: Double) {
+        self.selectedBasketPrice -= price
     }
     
     func deleteProductFromWishlist(with productId: Int) {
         if let index = wishlistProductList.firstIndex(where: { $0.productId == productId }) {
             wishlistProductList.remove(at: index)
+        }
+    }
+    
+    func deletePaymentProductList(with productId: Int) {
+        if let index = paymentProductList.firstIndex(where: { $0.productId == productId }) {
+            paymentProductList.remove(at: index)
         }
     }
     
@@ -121,8 +146,10 @@ class MocNetworkManager {
     ]
     
     private var HomeProductIdList: [Int] = []
-    private var basketProductList: [HomeProductListItemModel] = []
-    private var wishlistProductList: [HomeProductListItemModel] = []
+    private var basketProductList: [ProductListItemModel] = []
+    var selectedBasketPrice: Double = 0.0
+    private var paymentProductList: [ProductListItemModel] = []
+    private var wishlistProductList: [ProductListItemModel] = []
 
     
     private var MarketInfo: [MarketInfoModel] = [

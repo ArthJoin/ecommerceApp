@@ -22,15 +22,18 @@ class GeneralNavigationBar: BaseView {
             title.textAlignment = .center
         }
     }
+    func rightBtnIsHidden(_ ans: Bool) {
+        rightBtn.isHidden = ans
+    }
     func rightBtnImage(isNotification: Bool) {
         rightBtn.setImage(Resources.Images.common.notififcation, for: .normal)
     }
     func backBtn(isHidden ans: Bool) {
         backBtn.isHidden = ans 
     }
-        
     weak var delegate: GeneralNavigationBarDelegate?
     
+    //MARK: - Private Properties
     private let title: UILabel = {
         let label = UILabel()
         label.font = Resources.Fonts.systemWeight(with: 15, weight: .medium)
@@ -49,6 +52,7 @@ class GeneralNavigationBar: BaseView {
     }()
 }
 
+//MARK: - Lifecycle methods
 extension GeneralNavigationBar {
     override func setupViews() {
         super.setupViews()
@@ -75,13 +79,14 @@ extension GeneralNavigationBar {
     override func configureAppearance() {
         super.configureAppearance()
         backgroundColor = .white
-        backBtn.addTarget(self, action: #selector(backBtnAction), for: .touchUpInside)
         makeSystem(backBtn)
+        makeSystem(rightBtn)
+        backBtn.addTarget(self, action: #selector(backBtnAction), for: .touchUpInside)
         rightBtn.addTarget(self, action: #selector(rightBtnAction), for: .touchUpInside)
     }
 }
 
-//MARK: - Private Method
+//MARK: - Private Methods
 extension GeneralNavigationBar {
     @objc func backBtnAction() {
         delegate?.didBackBtnActionEnableTabBar()

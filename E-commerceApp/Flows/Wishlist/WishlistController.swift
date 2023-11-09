@@ -14,6 +14,7 @@ class WishlistController: BaseController {
     private let tableView = UITableView()
 }
 
+//MARK: - Lifecycle methods
 extension WishlistController {
     override func setupViews() {
         super.setupViews()
@@ -35,13 +36,16 @@ extension WishlistController {
     
     override func configureAppearance() {
         super.configureAppearance()
+        // Navigation bar
         navigationController?.navigationBar.isHidden = true
         navBar.configure(with: "Wishlist")
         navBar.backBtn(isHidden: true)
         navBar.delegate = self
+        // TableView
         tableView.separatorColor = .clear
         tableView.showsVerticalScrollIndicator = false
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(WishlistTableCell.self, forCellReuseIdentifier: String(describing: WishlistTableCell.self))
     }
     
@@ -63,13 +67,21 @@ extension WishlistController: GeneralNavigationBarDelegate {
 }
 
 //MARK: - UITableViewDataSource
-extension WishlistController: UITableViewDataSource {
+extension WishlistController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         item.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WishlistTableCell.self), for: indexPath) as! WishlistTableCell
         cell.configure(with: item[indexPath.row])
+        let view = UIView()
+        view.backgroundColor = .clear
+        cell.selectedBackgroundView = view
         return cell
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let secondVC = ProductDetailController()
+        secondVC.configure(with: item[indexPath.row].productId)
+        navigationController?.pushViewController(secondVC, animated: true)
     }
 }

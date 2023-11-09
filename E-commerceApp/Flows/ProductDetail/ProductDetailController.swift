@@ -18,23 +18,17 @@ class ProductDetailController: BaseController {
         tableView.reloadData()
     }
     
-    //MARK: - Life Cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupTableView()
-        navBar.delegate = self
-        navBar.configure(with: "Details Product")
-        navBar.textAlignment(isCenter: true)
-        tabBarController?.tabBar.isHidden = true
+    //MARK: - Private UIConstants
+    private enum UIConstant {
+        static let navBarTitle: String = "Details Product"
     }
     
     //MARK: - Private properties
     private let tableView = UITableView()
     private var product: [ProductDetailModel] = []
-    private var productDetail: HomeProductListItemModel?
+    private var productDetail: ProductListItemModel?
     private let navBar = GeneralNavigationBar()
     private let footer = FooterProductDetail()
-    private let basket = BasketVC()
 }
 
 //MARK: - GeneralNavigationBarDelegate
@@ -53,43 +47,51 @@ extension ProductDetailController: GeneralNavigationBarDelegate {
     }
 }
 
-//MARK: - Private Method
-private extension ProductDetailController {
-    func setupTableView() {
-        //MARK: - NavigationBar  Setup
+//MARK:
+extension ProductDetailController {
+    override func setupViews() {
+        super.setupViews()
         view.addSubview(navBar)
+        view.addSubview(tableView)
+        view.addSubview(footer)
+    }
+    
+    override func constaintViews() {
+        super.constaintViews()
         navBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.trailing.leading.equalToSuperview()
         }
-        
-        //MARK: - Footer Setup
-        guard let productDetail = productDetail else { return }
-        footer.configure(with: productDetail.productId)
-        view.addSubview(footer)
         footer.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
         }
-        
-        //MARK: - TableView Setup
-        tableView.dataSource = self
-        tableView.register(ProductDetailCell.self, forCellReuseIdentifier: String(describing: ProductDetailCell.self))
-        tableView.register(MarketDetailCell.self, forCellReuseIdentifier: String(describing: MarketDetailCell.self))
-        tableView.register(DiscriptCell.self, forCellReuseIdentifier: String(describing: DiscriptCell.self))
-        tableView.showsVerticalScrollIndicator = false
-        view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.top.equalTo(navBar.snp.bottom)
             make.trailing.leading.equalToSuperview()
             make.bottom.equalTo(footer.snp.top)
         }
-        tableView.separatorColor = Resources.Colors.secondary
+    }
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        tabBarController?.tabBar.isHidden = true
+        
+        navBar.delegate = self
+        navBar.configure(with: UIConstant.navBarTitle)
+        navBar.textAlignment(isCenter: true)
+        
+        guard let productDetail = productDetail else { return }
+        footer.configure(with: productDetail.productId)
+        
+        tableView.register(ProductDetailCell.self, forCellReuseIdentifier: String(describing: ProductDetailCell.self))
+        tableView.register(MarketDetailCell.self, forCellReuseIdentifier: String(describing: MarketDetailCell.self))
+        tableView.register(DiscriptCell.self, forCellReuseIdentifier: String(describing: DiscriptCell.self))
+        tableView.dataSource = self
+        tableView.showsVerticalScrollIndicator = false
+        tableView.separatorColor = .clear
         tableView.allowsSelection = false
     }
-}
-
-//MARK: - viewWillAppear fetchData
-extension ProductDetailController {
+    
     override func fetchData() {
         super.fetchData()
         guard let productDetail = productDetail else { return }

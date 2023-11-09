@@ -9,10 +9,10 @@ import UIKit
 
 final class WishlistTableCell: UITableViewCell {
     //MARK: - Public
-    func configure(with item: HomeProductListItemModel) {
+    func configure(with item: ProductListItemModel) {
         productImage.image = item.image
         productName.text = item.title
-        productPrice.text = item.subTitle
+        productPrice.text = "$\(item.subTitle)"
     }
     
     //MARK: - Init
@@ -53,7 +53,7 @@ final class WishlistTableCell: UITableViewCell {
     private let productPrice: UILabel = {
         let label = UILabel()
         label.font = Resources.Fonts.systemWeight(with: 15, weight: .medium)
-        label.text = DummyData.products.subTitle
+        label.text = "$\(DummyData.products.subTitle)"
         return label
     }()
 }
