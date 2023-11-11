@@ -12,11 +12,13 @@ class PaymentVC: BaseController {
     func configure() {
         let productList = MocNetworkManager.shared.getPaymentProductList()
         if !productList.isEmpty {
-            checkoutItems.append(.productList(productList))
-            checkoutItems.append(.deliveryType)
+            for i in productList {
+                checkoutItems.append(.productList(i))
+            }
+            checkoutItems.append(.deliveryType(DeliveryTypeItem(title: "", deliveryTime: "", deliveryPrice: "")))
             checkoutItems.append(.paymentMethod)
         } else {
-            checkoutItems.append(.deliveryType)
+            checkoutItems.append(.deliveryType(DeliveryTypeItem(title: "", deliveryTime: "", deliveryPrice: "")))
             checkoutItems.append(.paymentMethod)
         }
         footer.configure()
@@ -92,11 +94,12 @@ extension PaymentVC: UITableViewDataSource, UITableViewDelegate {
         switch cellType {
         case .productList(let product):
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: PaymentListCell.self), for: indexPath) as! PaymentListCell
-            cell.configure(with: product[indexPath.row])
+            cell.configure(with: product)
             cell.selectedBackgroundView = view
             return cell
-        case .deliveryType:
+        case .deliveryType(let delivery):
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: DeliveryTypeCell.self), for: indexPath) as! DeliveryTypeCell
+            cell.configure(with: delivery)
             cell.selectedBackgroundView = view
             return cell
         case .paymentMethod:
@@ -112,11 +115,24 @@ extension PaymentVC: UITableViewDataSource, UITableViewDelegate {
             print("productList")
         case .deliveryType:
             let secondVC = ChooseDelivery()
+            secondVC.delegate = self
             secondVC.modalPresentationStyle = .custom
             secondVC.transitioningDelegate = transition
             self.present(secondVC, animated: true)
         case .paymentMethod:
-            print("keep working")
+            let secondVC = PaymentMethodController()
+//            secondVC.delegate = self
+            secondVC.modalPresentationStyle = .custom
+            secondVC.transitioningDelegate = transition
+            self.present(secondVC, animated: true)
         }
+    }
+}
+
+//MARK: - ChooseDeliveryDelegate
+extension PaymentVC: ChooseDeliveryDelegate {
+    func didDeliveryTypeBtnTapped(with delivery: DeliveryTypeItem) {
+        self.checkoutItems[checkoutItems.count-2] = .deliveryType(delivery)
+        tableView.reloadData()
     }
 }

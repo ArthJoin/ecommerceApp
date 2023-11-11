@@ -9,10 +9,12 @@ import UIKit
 
 final class WishlistTableCell: UITableViewCell {
     //MARK: - Public
-    func configure(with item: ProductListItemModel) {
-        productImage.image = item.image
-        productName.text = item.title
-        productPrice.text = "$\(item.subTitle)"
+    func configure(with product: ProductListItemModel) {
+        self.isWishlist(with: product.productId)
+        self.product = product
+        productImage.image = product.image
+        productName.text = product.title
+        productPrice.text = "$\(product.subTitle)"
     }
     
     //MARK: - Init
@@ -26,15 +28,8 @@ final class WishlistTableCell: UITableViewCell {
     }
     
     //MARK: - Private Properties
-    private let chekbox: UIButton = {
-        let btn = UIButton()
-        if let systemImage = UIImage(systemName: "app") {
-            let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .regular))
-            btn.setImage(resizedImage, for: .normal)
-        }
-        btn.tintColor = Resources.Colors.secondary
-        return btn
-    }()
+    private let wishlistBtn = UIButton()
+    private var product: ProductListItemModel?
     
     private let productImage: UIImageView = {
         let image = UIImageView()
@@ -61,14 +56,14 @@ final class WishlistTableCell: UITableViewCell {
 //MARK: - Private Methods
 extension WishlistTableCell {
     func initialize() {
-        contentView.addSubview(chekbox)
-        chekbox.snp.makeConstraints { make in
+        contentView.addSubview(wishlistBtn)
+        wishlistBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
             make.top.bottom.equalToSuperview()
         }
         contentView.addSubview(productImage)
         productImage.snp.makeConstraints { make in
-            make.leading.equalTo(chekbox.snp.trailing).offset(15)
+            make.leading.equalTo(wishlistBtn.snp.trailing).offset(15)
             make.top.bottom.equalToSuperview().inset(15)
             make.height.equalTo(50)
             make.width.equalTo(70)
@@ -83,31 +78,37 @@ extension WishlistTableCell {
             make.leading.equalTo(productImage.snp.trailing).offset(10)
             make.centerY.equalTo(productImage)
         }
-        //
         
-        chekbox.addTarget(self, action: #selector(chekboxTapped), for: .touchUpInside)
+        wishlistBtn.addTarget(self, action: #selector(wishlistBtnAction), for: .touchDown)
+        
     }
 }
 
 extension WishlistTableCell {
-    @objc func chekboxTapped() {
-        if chekbox.isSelected {
-            UIView.animate(withDuration: 0.2) {
-                if let sysImage = UIImage(systemName: "app") {
-                    let resizedImage = sysImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .regular))
-                    self.chekbox.setImage(resizedImage, for: .normal)
-                }
-                self.chekbox.tintColor = Resources.Colors.secondary
+    @objc func wishlistBtnAction() {
+        guard let item = self.product else { return }
+        let product = MocNetworkManager.shared.getProductById(with: item.productId)
+        if product.isWishlist {
+            MocNetworkManager.shared.putProductListRemoveWishlist(with: item.productId)
+            MocNetworkManager.shared.deleteProductFromWishlist(with: item.productId)
+            UIView.animate(withDuration: 0.3) {
+                Resources.Images.buttons.wishlistInactive(with: self.wishlistBtn)
             }
         } else {
+            MocNetworkManager.shared.putProductListAddWishlist(with: item.productId)
+            MocNetworkManager.shared.postProductToWishlist(with: item)
             UIView.animate(withDuration: 0.3) {
-                if let sysImage = UIImage(systemName: "checkmark.square.fill") {
-                    let resizedImage = sysImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .regular))
-                    self.chekbox.setImage(resizedImage, for: .normal)
-                }
-                self.chekbox.tintColor = Resources.Colors.active
+                Resources.Images.buttons.wishlistActive(with: self.wishlistBtn)
             }
         }
-        chekbox.isSelected = !chekbox.isSelected
+    }
+    
+    func isWishlist(with productId: Int) {
+        let product = MocNetworkManager.shared.getProductById(with: productId)
+        if product.isWishlist {
+            Resources.Images.buttons.wishlistActive(with: wishlistBtn)
+        } else {
+            Resources.Images.buttons.wishlistInactive(with: wishlistBtn)
+        }
     }
 }

@@ -148,7 +148,7 @@ class MocNetworkManager {
     private var HomeProductIdList: [Int] = []
     private var basketProductList: [ProductListItemModel] = []
     var selectedBasketPrice: Double = 0.0
-    private var paymentProductList: [ProductListItemModel] = []
+    var paymentProductList: [ProductListItemModel] = []
     private var wishlistProductList: [ProductListItemModel] = []
 
     

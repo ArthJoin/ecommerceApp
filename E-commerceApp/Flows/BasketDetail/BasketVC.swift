@@ -90,9 +90,11 @@ extension BasketVC: UITableViewDataSource, UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            //Remove from DB
             MocNetworkManager.shared.removeBasketPrice(with: productList[indexPath.row].subTitle)
             footer.configure()
             MocNetworkManager.shared.putProductListRemoveBasket(with: productList[indexPath.row].productId)
+            //Remove from self array
             productList.remove(at: indexPath.row)
             MocNetworkManager.shared.deleteProductFromBasket(with: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -111,6 +113,7 @@ extension BasketVC: GeneralNavigationBarDelegate {
     }
     func didBackBtnActionEnableTabBar() {
         MocNetworkManager.shared.selectedBasketPrice = 0
+        MocNetworkManager.shared.paymentProductList.removeAll()
         navigationController?.popViewController(animated: true)
         if navigationController?.viewControllers.count == 1 {
             tabBarController?.tabBar.isHidden = false

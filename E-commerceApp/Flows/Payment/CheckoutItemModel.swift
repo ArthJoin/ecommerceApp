@@ -8,7 +8,7 @@
 import Foundation
 
 enum CheckoutItemModel {
-    case productList([ProductListItemModel])
-    case deliveryType
+    case productList(ProductListItemModel)
+    case deliveryType(DeliveryTypeItem)
     case paymentMethod
 }

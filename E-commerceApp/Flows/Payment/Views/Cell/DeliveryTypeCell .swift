@@ -8,6 +8,16 @@
 import UIKit
 
 final class DeliveryTypeCell: UITableViewCell {
+    //MARK: - Public
+    func configure(with delivery: DeliveryTypeItem) {
+        if delivery.title == "" {
+            self.text.text = "Select the delivery option"
+        } else {
+            self.text.text = "\(delivery.title) \(delivery.deliveryTime)"
+            self.text.textColor = Resources.Colors.titleMain
+        }
+    }
+    
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,7 +40,7 @@ final class DeliveryTypeCell: UITableViewCell {
     private var text: UILabel = {
         let label = UILabel()
         label.font = Resources.Fonts.helveticaRegular(with: 15)
-        label.textColor = Resources.Colors.titleMain
+        label.textColor = Resources.Colors.secondary
         return label
     }()
     

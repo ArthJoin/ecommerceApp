@@ -13,7 +13,13 @@ struct DeliveryTypeItem {
     var deliveryPrice: String
 }
 
+protocol ChooseDeliveryDelegate: AnyObject {
+    func didDeliveryTypeBtnTapped(with delivery: DeliveryTypeItem)
+}
+
 final class ChooseDelivery: BaseController {
+    weak var delegate: ChooseDeliveryDelegate?
+    
     private let header: UILabel = {
         let label = UILabel()
         label.text = "Select the delivery"
@@ -60,17 +66,15 @@ extension ChooseDelivery {
     override func configureAppearance() {
         super.configureAppearance()
         view.layer.cornerRadius = 24
-        
         stack.axis = .horizontal
         stack.addArrangedSubview(header)
         stack.addArrangedSubview(closeBtn)
         stack.alignment = .center
         stack.distribution = .equalSpacing
-        
-        
         tableView.separatorColor = .clear
         tableView.register(ChooseDeliveryCell.self, forCellReuseIdentifier: String(describing: ChooseDeliveryCell.self))
         tableView.dataSource = self
+        tableView.delegate = self
         
         closeBtn.addTarget(self, action: #selector(closeBtnHandler), for: .touchUpInside)
     }
@@ -80,6 +84,7 @@ extension ChooseDelivery {
     }
 }
 
+//MARK: - UITableViewDataSource
 extension ChooseDelivery: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         deliveryType.count
@@ -94,3 +99,10 @@ extension ChooseDelivery: UITableViewDataSource {
     }
 }
 
+extension ChooseDelivery: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let delivery = deliveryType[indexPath.row]
+        delegate?.didDeliveryTypeBtnTapped(with: delivery)
+        self.dismiss(animated: true)
+    }
+}

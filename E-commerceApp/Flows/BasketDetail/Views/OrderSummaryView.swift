@@ -38,7 +38,7 @@ final class OrderSummaryView: BaseView {
     
     private let paymentMethodBtn: UIButton = {
         let btn = UIButton()
-        btn.setTitle("Select payment method", for: .normal)
+        btn.setTitle("Continue", for: .normal)
         btn.titleLabel?.font = Resources.Fonts.helveticaRegular(with: UIConstants.fontSize)
         btn.backgroundColor = Resources.Colors.active
         btn.layer.cornerRadius = 5

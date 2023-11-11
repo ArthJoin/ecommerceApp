@@ -28,10 +28,11 @@ final class PaymentMethodCell: UITableViewCell {
     }()
     
     private var text: UILabel = {
-        let label = UILabel()
-        label.font = Resources.Fonts.helveticaRegular(with: 15)
-        label.textColor = Resources.Colors.titleMain
-        return label
+        let text = UILabel()
+        text.text = "Add a payment method"
+        text.font = Resources.Fonts.helveticaRegular(with: 15)
+        text.textColor = Resources.Colors.secondary
+        return text
     }()
     
     private let btn: UIButton = {

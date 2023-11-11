@@ -12,6 +12,17 @@ class WishlistController: BaseController {
     private var item = MocNetworkManager.shared.getWishlistProductList()
     private let navBar = GeneralNavigationBar()
     private let tableView = UITableView()
+    let emptyStateImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .red
+        imageView.alpha = 0.6
+        imageView.contentMode = .center
+        if let systemImage = UIImage(systemName: "heart.slash.fill") {
+            let resizedImage = systemImage.withConfiguration(UIImage.SymbolConfiguration(pointSize: 60, weight: .regular))
+            imageView.image = resizedImage
+        }
+        return imageView
+    }()
 }
 
 //MARK: - Lifecycle methods
@@ -30,7 +41,8 @@ extension WishlistController {
         }
         tableView.snp.makeConstraints { make in
             make.top.equalTo(navBar.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
     
@@ -52,6 +64,11 @@ extension WishlistController {
     override func fetchData() {
         super.fetchData()
         item = MocNetworkManager.shared.getWishlistProductList()
+        if item.isEmpty {
+            tableView.backgroundView = emptyStateImageView
+        } else {
+            tableView.backgroundView = nil
+        }
         tableView.reloadData()
     }
 }
@@ -61,7 +78,10 @@ extension WishlistController: GeneralNavigationBarDelegate {
     func didBackBtnActionEnableTabBar() {
     }
     func rightBtnAction() {
-        navigationController?.pushViewController(BasketVC(), animated: true)
+        let secondVC = BasketVC()
+        let productList = MocNetworkManager.shared.getBasketProductList()
+        secondVC.configure(with: productList)
+        navigationController?.pushViewController(secondVC, animated: true)
         tabBarController?.tabBar.isHidden = true
     }
 }
