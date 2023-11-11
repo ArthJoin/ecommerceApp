@@ -73,7 +73,7 @@ extension PaymentVC {
     }
 }
 
-//MARK: - Navigation Bar Delegate
+//MARK: - GeneralNavigationBarDelegate
 extension PaymentVC: GeneralNavigationBarDelegate {
     func didBackBtnActionEnableTabBar() {
         navigationController?.popViewController(animated: true)
@@ -121,7 +121,7 @@ extension PaymentVC: UITableViewDataSource, UITableViewDelegate {
             self.present(secondVC, animated: true)
         case .paymentMethod:
             let secondVC = PaymentMethodController()
-//            secondVC.delegate = self
+            secondVC.delegate = self
             secondVC.modalPresentationStyle = .custom
             secondVC.transitioningDelegate = transition
             self.present(secondVC, animated: true)
@@ -130,9 +130,14 @@ extension PaymentVC: UITableViewDataSource, UITableViewDelegate {
 }
 
 //MARK: - ChooseDeliveryDelegate
-extension PaymentVC: ChooseDeliveryDelegate {
+extension PaymentVC: ChooseDeliveryDelegate, PaymentMethodControllerDelegate {
     func didDeliveryTypeBtnTapped(with delivery: DeliveryTypeItem) {
         self.checkoutItems[checkoutItems.count-2] = .deliveryType(delivery)
         tableView.reloadData()
+    }
+    
+    func didAddNewCardBtnTapped() {
+        let secondVC = AddNewCardController()
+        navigationController?.pushViewController(secondVC, animated: true)
     }
 }
