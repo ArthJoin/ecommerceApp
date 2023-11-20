@@ -33,7 +33,7 @@ enum Resources {
         
         enum navBar {
             static var wishlist = "Wishlist"
-            static var history = "History"
+            static var settings = "Settings"
             static var account = "Account"
         }
         
@@ -70,6 +70,7 @@ enum Resources {
             static var notififcation = UIImage(named: "Notification_icon")
             static var basket = UIImage(named: "basket_icon")
             static var search = UIImage(named: "Search")
+            static var MasterCardVisaLogos = UIImage(named: "vise+mastercardLogo")
         }
         
         enum buttons {

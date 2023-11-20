@@ -7,12 +7,12 @@
 
 import UIKit
 
-class HistoryController: BaseController {
+class SettingsController: BaseController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        title = Resources.Strings.navBar.history
+        title = Resources.Strings.navBar.settings
         navigationController?.tabBarItem.title = Resources.Strings.TabBar.history
         
         addNavBarButton(at: .left, with: Resources.Strings.history.navBarLeft)

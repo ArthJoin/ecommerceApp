@@ -38,7 +38,7 @@ final class TabBarController: UITabBarController {
         
         let homeViewController = HomeController()
         let wishlistViewController = WishlistController()
-        let historyViewController = HistoryController()
+        let historyViewController = SettingsController()
         let accountViewController = AccountController()
         
         let homeNavigation = NavBarController(rootViewController: homeViewController)
