@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DeliveryView: BaseView {
+class DeliveryAddresView: BaseView {
     //MARK: - Private Properties
     private let title: UILabel = {
         let label = UILabel()
@@ -19,7 +19,7 @@ class DeliveryView: BaseView {
     private var deliveryAddressBtn = DeliveryAddressButton()
 }
 
-extension DeliveryView {
+extension DeliveryAddresView {
     override func setupViews() {
         super.setupViews()
         addSubview(title)

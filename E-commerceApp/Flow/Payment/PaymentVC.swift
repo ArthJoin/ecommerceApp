@@ -29,7 +29,7 @@ class PaymentVC: BaseController {
     private var checkoutItems: [CheckoutItemModel] = []
     private let generalNavigationBar = GeneralNavigationBar()
     private let tableView = UITableView()
-    private var footer = OrderSummaryView()
+    private var footer = BasketFooterView()
     private let transition = PanelTransition()
 }
 

@@ -17,9 +17,9 @@ class BasketVC: BaseController {
     //MARK: - Private Properties
     private var productList: [ProductListItemModel] = []
     private let navBar = GeneralNavigationBar()
-    private let deliveryView = DeliveryView()
+    private let deliveryView = DeliveryAddresView()
     private let tableView = UITableView()
-    private let footer = OrderSummaryView()
+    private let footer = BasketFooterView()
 }
 
 extension BasketVC {
@@ -122,7 +122,7 @@ extension BasketVC: GeneralNavigationBarDelegate {
 }
 
 //MARK: - PaymentMethodBtn Delegate
-extension BasketVC: OrderSummaryViewDelegate {
+extension BasketVC: BasketFooterViewDelegate {
     func didPaymentMethodBtnTapped() {
         let secondVC = PaymentVC()
         secondVC.configure()

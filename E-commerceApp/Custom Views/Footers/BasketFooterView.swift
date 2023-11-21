@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol OrderSummaryViewDelegate: AnyObject {
+protocol BasketFooterViewDelegate: AnyObject {
     func didPaymentMethodBtnTapped()
 }
 
-final class OrderSummaryView: BaseView {
+final class BasketFooterView: BaseView {
     //MARK: - Public
     func configure() {
         self.price = MocNetworkManager.shared.getBasketSelectedItemsPrice()
@@ -21,7 +21,7 @@ final class OrderSummaryView: BaseView {
         self.paymentMethodBtn.setTitle(text, for: .normal)
     }
     
-    weak var delegate: OrderSummaryViewDelegate?
+    weak var delegate: BasketFooterViewDelegate?
     
     //MARK: - Private UIConstants
     private enum UIConstants {
@@ -68,7 +68,7 @@ final class OrderSummaryView: BaseView {
 }
 
 //MARK: - Ovveride
-extension OrderSummaryView {
+extension BasketFooterView {
     override func setupViews() {
         super.setupViews()
         addSubview(paymentMethodBtn)
