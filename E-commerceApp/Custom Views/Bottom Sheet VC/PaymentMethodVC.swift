@@ -7,13 +7,8 @@
 
 import UIKit
 
-protocol PaymentMethodControllerDelegate: AnyObject {
-    func didAddNewCardBtnTapped()
-}
 
-final class PaymentMethodController: BaseController {
-    weak var delegate: PaymentMethodControllerDelegate?
-    
+final class PaymentMethodVC: BaseController {
     //MARK: - Private Properties
     private let header: UILabel = {
         let label = UILabel()
@@ -48,7 +43,7 @@ final class PaymentMethodController: BaseController {
     }()
 }
 
-extension PaymentMethodController {
+extension PaymentMethodVC {
     override func setupViews() {
         super.setupViews()
         view.addSubview(stack)
@@ -87,12 +82,13 @@ extension PaymentMethodController {
     }
 }
 
-extension PaymentMethodController {
+extension PaymentMethodVC {
     @objc func closeBtnHandler() {
         self.dismiss(animated: true)
     }
     @objc func addNewCardBtnHandler() {
-        self.dismiss(animated: true)
-        delegate?.didAddNewCardBtnTapped()
+        let secondVC = AddNewCardController()
+        secondVC.modalPresentationStyle = .fullScreen
+        self.present(secondVC, animated: true)
     }
 }

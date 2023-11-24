@@ -17,7 +17,7 @@ protocol ChooseDeliveryDelegate: AnyObject {
     func didDeliveryTypeBtnTapped(with delivery: DeliveryTypeItem)
 }
 
-final class ChooseDelivery: BaseController {
+final class ChooseDeliveryVC: BaseController {
     weak var delegate: ChooseDeliveryDelegate?
     
     private let header: UILabel = {
@@ -44,7 +44,7 @@ final class ChooseDelivery: BaseController {
     private let tableView = UITableView()
 }
 
-extension ChooseDelivery {
+extension ChooseDeliveryVC {
     override func setupViews() {
         super.setupViews()
         view.addSubview(stack)
@@ -85,7 +85,7 @@ extension ChooseDelivery {
 }
 
 //MARK: - UITableViewDataSource
-extension ChooseDelivery: UITableViewDataSource {
+extension ChooseDeliveryVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         deliveryType.count
     }
@@ -99,7 +99,7 @@ extension ChooseDelivery: UITableViewDataSource {
     }
 }
 
-extension ChooseDelivery: UITableViewDelegate {
+extension ChooseDeliveryVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let delivery = deliveryType[indexPath.row]
         delegate?.didDeliveryTypeBtnTapped(with: delivery)

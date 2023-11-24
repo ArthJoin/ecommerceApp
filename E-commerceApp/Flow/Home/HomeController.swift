@@ -10,8 +10,9 @@ import SnapKit
 
 class HomeController: BaseController {
     //MARK: - Private properties
-    private let navBar = HomeNavBar()
-    private let tableView = UITableView()    
+    private let navBar = MainNavigationBar()
+    private let tableView = UITableView()
+    private let transition = PanelTransition()
     private var items: [HomeItemType] = MocNetworkManager.shared.getHomeDB()
 }
 
@@ -87,12 +88,22 @@ extension HomeController: HomeProductListCellDelegate {
 }
 
 //MARK: - BasketBtnDelegate
-extension HomeController: BasketBtnDelegate {
+extension HomeController: HomeNavBarDelegate {
+    func deliveryAddressBtnTapped() {
+        let secondVC = DeliveryAddressVC()
+        secondVC.modalPresentationStyle = .custom
+        secondVC.transitioningDelegate = transition
+        
+        self.present(secondVC, animated: true)
+    }
+    
     func didBasketAction() {
         let secondVC = BasketVC()
         let productList = MocNetworkManager.shared.getBasketProductList()
         secondVC.configure(with: productList)
         navigationController?.pushViewController(secondVC, animated: true)
-        tabBarController?.tabBar.isHidden = true
+        UIView.animate(withDuration: 0.3) {
+            self.tabBarController?.tabBar.isHidden = true
+        }
     }
 }

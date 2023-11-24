@@ -7,11 +7,12 @@
 
 import UIKit
 
-protocol BasketBtnDelegate: AnyObject {
+protocol HomeNavBarDelegate: AnyObject {
     func didBasketAction()
+    func deliveryAddressBtnTapped()
 }
 
-final class HomeNavBar: UIView {
+final class MainNavigationBar: UIView {
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,7 +26,7 @@ final class HomeNavBar: UIView {
     //MARK: - Private Properies
     private let deliveryAddressButton = DeliveryAddressButton()
     private let searchView = HomeSearchBar()
-    weak var delegate: BasketBtnDelegate?
+    weak var delegate: HomeNavBarDelegate?
     
     private let notificationButton: UIButton = {
         let btn = UIButton()
@@ -48,7 +49,7 @@ final class HomeNavBar: UIView {
     }()
 }
 
-extension HomeNavBar {
+extension MainNavigationBar {
    func Initialize() {
        backgroundColor = .white
        deliveryAddressButton.setTitle("Almaty Al-farabi 15 k4v 412")
@@ -84,11 +85,15 @@ extension HomeNavBar {
        makeSystem(basketButton)
        makeSystem(notificationButton)
        basketButton.addTarget(self, action: #selector(basketButtonAction), for: .touchUpInside)
+       deliveryAddressButton.addTarget(self, action: #selector(deliveryAddressBtnHandler), for: .touchUpInside)
     }
 }
 
-extension HomeNavBar {
+extension MainNavigationBar {
     @objc func basketButtonAction() {
         delegate?.didBasketAction()
+    }
+    @objc func deliveryAddressBtnHandler() {
+        delegate?.deliveryAddressBtnTapped()
     }
 }

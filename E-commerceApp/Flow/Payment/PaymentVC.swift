@@ -114,14 +114,13 @@ extension PaymentVC: UITableViewDataSource, UITableViewDelegate {
         case .productList(_):
             print("productList")
         case .deliveryType:
-            let secondVC = ChooseDelivery()
+            let secondVC = ChooseDeliveryVC()
             secondVC.delegate = self
             secondVC.modalPresentationStyle = .custom
             secondVC.transitioningDelegate = transition
             self.present(secondVC, animated: true)
         case .paymentMethod:
-            let secondVC = PaymentMethodController()
-            secondVC.delegate = self
+            let secondVC = PaymentMethodVC()
             secondVC.modalPresentationStyle = .custom
             secondVC.transitioningDelegate = transition
             self.present(secondVC, animated: true)
@@ -130,14 +129,9 @@ extension PaymentVC: UITableViewDataSource, UITableViewDelegate {
 }
 
 //MARK: - ChooseDeliveryDelegate
-extension PaymentVC: ChooseDeliveryDelegate, PaymentMethodControllerDelegate {
+extension PaymentVC: ChooseDeliveryDelegate {
     func didDeliveryTypeBtnTapped(with delivery: DeliveryTypeItem) {
         self.checkoutItems[checkoutItems.count-2] = .deliveryType(delivery)
         tableView.reloadData()
-    }
-    
-    func didAddNewCardBtnTapped() {
-        let secondVC = AddNewCardController()
-        navigationController?.pushViewController(secondVC, animated: true)
     }
 }

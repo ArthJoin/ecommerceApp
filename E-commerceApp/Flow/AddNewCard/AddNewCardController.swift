@@ -77,7 +77,7 @@ extension AddNewCardController {
 
 extension AddNewCardController: GeneralNavigationBarDelegate {
     func didBackBtnActionEnableTabBar() {
-        navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
     }
     
     func rightBtnAction() {
