@@ -25,7 +25,7 @@ class ProductDetailController: BaseController {
     
     //MARK: - Private properties
     private let tableView = UITableView()
-    private var product: [ProductDetailModel] = []
+    private var product: [ProductDetailItemType] = []
     private var productDetail: ProductListItemModel?
     private let navBar = GeneralNavigationBar()
     private let footer = FooterProductDetail()

@@ -9,7 +9,7 @@ import UIKit
 
 class HomeCategoryCell: UITableViewCell {
     //MARK: - Public
-    func configure(with model: HomeCategoryCellModel){
+    func configure(with model: ProductCategoryCellModel){
         self.item = model
         collectionView.reloadData()
     }
@@ -37,7 +37,7 @@ class HomeCategoryCell: UITableViewCell {
     
     //MARK: - Private Properties
     private var collectionView: UICollectionView!
-    private var item: HomeCategoryCellModel = []
+    private var item: ProductCategoryCellModel = []
     
     private let header: UIView = {
         let view = UIView()

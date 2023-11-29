@@ -7,7 +7,12 @@
 
 import UIKit
 
+protocol CardViewTextFieldDelegate: AnyObject {
+    func textFieldDidEndEditing(with text: String)
+}
+
 final class CardViewTextField: BaseView {
+    weak var delegate: CardViewTextFieldDelegate?
     
     //MARK: - Public
     func configure(header name: String, placeholder text: String, isImage hidden: Bool = true, textField tag: Int, keyboard type: Bool = false) {
@@ -142,5 +147,9 @@ extension CardViewTextField: UITextFieldDelegate {
         } else {
             return true
         }
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        delegate?.textFieldDidEndEditing(with: text)
     }
 }

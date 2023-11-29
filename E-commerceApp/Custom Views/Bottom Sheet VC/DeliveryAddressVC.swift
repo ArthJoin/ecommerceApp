@@ -51,6 +51,8 @@ extension DeliveryAddressVC {
         
         tableView.dataSource = self
         tableView.register(DeliveryAddressCell.self, forCellReuseIdentifier: String(describing: DeliveryAddressCell.self))
+        
+        closeBtn.addTarget(self, action: #selector(closeBtnHandler), for: .touchUpInside)
     }
 }
 
@@ -61,5 +63,11 @@ extension DeliveryAddressVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: DeliveryAddressCell.self), for: indexPath) as! DeliveryAddressCell
         return cell
+    }
+}
+
+extension DeliveryAddressVC {
+    @objc func closeBtnHandler() {
+        self.dismiss(animated: true)
     }
 }

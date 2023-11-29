@@ -7,9 +7,9 @@
 
 import UIKit
 
-struct HomeCategoryItemModel {
+struct ProductCategoryItemModel {
     let image: UIImage
     let title: String
 }
 
-typealias HomeCategoryCellModel = [HomeCategoryItemModel]
+typealias ProductCategoryCellModel = [ProductCategoryItemModel]

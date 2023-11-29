@@ -9,7 +9,7 @@ import UIKit
 
 class CategoryItemCell: UICollectionViewCell {
     //MARK: - Public
-    func configure(with model: HomeCategoryItemModel){
+    func configure(with model: ProductCategoryItemModel){
         imageView.image = model.image
         label.text = model.title
     }

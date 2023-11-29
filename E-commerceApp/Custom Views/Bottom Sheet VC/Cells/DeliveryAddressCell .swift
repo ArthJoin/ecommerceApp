@@ -9,11 +9,16 @@ import UIKit
 
 final class DeliveryAddressCell: UITableViewCell {
     //MARK: - Public
-    
+    func configure() {
+        
+    }
     
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+        constaintViews()
+        configureAppearance()
         
     }
     
@@ -32,5 +37,27 @@ final class DeliveryAddressCell: UITableViewCell {
         image.tintColor = .black
         return image
     }()
-    
+    private let addresLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        return label
+    }()
+    private let stack = UIStackView()
+}
+
+extension DeliveryAddressCell {
+    func setupViews() {
+        contentView.addSubview(stack)
+    }
+    func constaintViews() {
+        stack.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    func configureAppearance() {
+        stack.axis = .horizontal
+        stack.addArrangedSubview(addressIcon)
+        stack.addArrangedSubview(addresLabel)
+        stack.distribution = .fillProportionally
+    }
 }

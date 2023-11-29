@@ -102,8 +102,11 @@ extension HomeController: HomeNavBarDelegate {
         let productList = MocNetworkManager.shared.getBasketProductList()
         secondVC.configure(with: productList)
         navigationController?.pushViewController(secondVC, animated: true)
-        UIView.animate(withDuration: 0.3) {
-            self.tabBarController?.tabBar.isHidden = true
-        }
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    func notificationBtnTapped() {
+        let secondVC = NotificationVC()
+        navigationController?.pushViewController(secondVC, animated: true)
+        self.tabBarController?.tabBar.isHidden = true
     }
 }

@@ -21,11 +21,11 @@ class MocNetworkManager {
                 HomeBannerItemModel(image: DummyData.banner.first!)
             ]),
             .category([
-                HomeCategoryItemModel(image: DummyData.category.category1!, title: DummyData.category.category1Title),
-                HomeCategoryItemModel(image: DummyData.category.category2!, title: DummyData.category.category2Title),
-                HomeCategoryItemModel(image: DummyData.category.category3!, title: DummyData.category.category3Title),
-                HomeCategoryItemModel(image: DummyData.category.category4!, title: DummyData.category.category4Title),
-                HomeCategoryItemModel(image: DummyData.category.category5!, title: DummyData.category.category5Title),
+                ProductCategoryItemModel(image: DummyData.category.category1!, title: DummyData.category.category1Title),
+                ProductCategoryItemModel(image: DummyData.category.category2!, title: DummyData.category.category2Title),
+                ProductCategoryItemModel(image: DummyData.category.category3!, title: DummyData.category.category3Title),
+                ProductCategoryItemModel(image: DummyData.category.category4!, title: DummyData.category.category4Title),
+                ProductCategoryItemModel(image: DummyData.category.category5!, title: DummyData.category.category5Title),
             ]),
         ]
         for i in productList {

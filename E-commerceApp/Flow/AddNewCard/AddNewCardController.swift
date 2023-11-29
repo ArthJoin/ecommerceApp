@@ -12,8 +12,8 @@ final class AddNewCardController: BaseController {
     private let verticalStack = UIStackView()
     private let horizontalStack = UIStackView()
     private let cardNumber = CardViewTextField()
-    private let mmyy = CardViewTextField()
-    private let cvv = CardViewTextField()
+    private let cardExpDate = CardViewTextField()
+    private let cardCvv = CardViewTextField()
     private let cardHolder = CardViewTextField()
     
     private let doneBtn: UIButton = {
@@ -57,13 +57,13 @@ extension AddNewCardController {
         navBar.delegate = self
         
         cardNumber.configure(header: "Card number", placeholder: "Enter card num ...", isImage: false, textField: 0)
-        mmyy.configure(header: "Exp date", placeholder: "mm/yy", textField: 1)
-        cvv.configure(header: "Security code", placeholder: "cvv/csv", textField: 2)
+        cardExpDate.configure(header: "Exp date", placeholder: "mm/yy", textField: 1)
+        cardCvv.configure(header: "Security code", placeholder: "cvv/csv", textField: 2)
         cardHolder.configure(header: "Card holder", placeholder: "Enter card holder name", textField: 3, keyboard: true)
         
         horizontalStack.axis = .horizontal
-        horizontalStack.addArrangedSubview(mmyy)
-        horizontalStack.addArrangedSubview(cvv)
+        horizontalStack.addArrangedSubview(cardExpDate)
+        horizontalStack.addArrangedSubview(cardCvv)
         horizontalStack.distribution = .fillProportionally
         verticalStack.axis = .vertical
         verticalStack.addArrangedSubview(cardNumber)
@@ -71,6 +71,11 @@ extension AddNewCardController {
         verticalStack.addArrangedSubview(cardHolder)
         
         doneBtn.addTarget(self, action: #selector(doneBtnHandler), for: .touchUpInside)
+        
+        cardNumber.delegate = self
+        cardHolder.delegate = self
+        cardExpDate.delegate = self
+        cardCvv.delegate = self
     }
 }
 
@@ -85,7 +90,12 @@ extension AddNewCardController: GeneralNavigationBarDelegate {
 }
 extension AddNewCardController {
     @objc func doneBtnHandler() {
-        
+       
     }
 }
 
+extension AddNewCardController: CardViewTextFieldDelegate {
+    func textFieldDidEndEditing(with text: String) {
+        print(text)
+    }
+}

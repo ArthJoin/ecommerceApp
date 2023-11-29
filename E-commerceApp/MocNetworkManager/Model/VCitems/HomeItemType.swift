@@ -7,6 +7,6 @@
 
 enum HomeItemType {
     case banner(HomeBannerCellModel)
-    case category(HomeCategoryCellModel)
+    case category(ProductCategoryCellModel)
     case productList([Int])
 }

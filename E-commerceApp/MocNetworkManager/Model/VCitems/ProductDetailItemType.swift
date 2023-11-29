@@ -5,7 +5,7 @@
 //  Created by Артур Наврузов on 30.10.2023.
 //
 
-enum ProductDetailModel {
+enum ProductDetailItemType {
     case productDetail(ProductListItemModel)
     case marketDetail(MarketInfoModel)
     case productDiscription

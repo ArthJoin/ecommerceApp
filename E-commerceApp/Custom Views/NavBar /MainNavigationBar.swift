@@ -10,6 +10,7 @@ import UIKit
 protocol HomeNavBarDelegate: AnyObject {
     func didBasketAction()
     func deliveryAddressBtnTapped()
+    func notificationBtnTapped()
 }
 
 final class MainNavigationBar: UIView {
@@ -86,6 +87,7 @@ extension MainNavigationBar {
        makeSystem(notificationButton)
        basketButton.addTarget(self, action: #selector(basketButtonAction), for: .touchUpInside)
        deliveryAddressButton.addTarget(self, action: #selector(deliveryAddressBtnHandler), for: .touchUpInside)
+       notificationButton.addTarget(self, action: #selector(notificationBtnHandler), for: .touchUpInside)
     }
 }
 
@@ -95,5 +97,8 @@ extension MainNavigationBar {
     }
     @objc func deliveryAddressBtnHandler() {
         delegate?.deliveryAddressBtnTapped()
+    }
+    @objc func notificationBtnHandler() {
+        delegate?.notificationBtnTapped()
     }
 }
